@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Resume Analyzer</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .callback-container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+        }
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .success-icon {
+            color: #28a745;
+            font-size: 60px;
+            margin: 20px 0;
+        }
+        .error-icon {
+            color: #dc3545;
+            font-size: 60px;
+            margin: 20px 0;
+        }
+        .message {
+            margin: 20px 0;
+            font-size: 18px;
+            color: #495057;
+        }
+        .btn-custom {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+            transition: transform 0.2s;
+        }
+        .btn-custom:hover {
+            transform: translateY(-2px);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="callback-container">
+        <div id="loadingState">
+            <h2>Processing Login...</h2>
+            <div class="spinner"></div>
+            <p class="message">Please wait while we complete your authentication.</p>
+        </div>
+
+        <div id="successState" style="display: none;">
+            <i class="fas fa-check-circle success-icon"></i>
+            <h2>Login Successful!</h2>
+            <p class="message">You're being redirected to your dashboard...</p>
+        </div>
+
+        <div id="errorState" style="display: none;">
+            <i class="fas fa-exclamation-circle error-icon"></i>
+            <h2>Login Failed</h2>
+            <p class="message" id="errorMessage">Something went wrong during authentication.</p>
+            <a href="../index.html" class="btn-custom">
+                <i class="fas fa-home me-2"></i>Return to Home
+            </a>
+        </div>
+    </div>
+
+    <script src="../js/auth-cognito-hosted.js"></script>
+    <script>
+        console.log(' Callback page loaded');
+        
+        // Check if we have an authorization code
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+        const error = urlParams.get('error');
+        const errorDescription = urlParams.get('error_description');
+
+        if (error) {
+            // Handle OAuth error
+            console.error('OAuth error:', error, errorDescription);
+            showError(errorDescription || error);
+        } else if (code) {
+            // Handle successful callback
+            console.log(' Authorization code received');
+            handleCallback();
+        } else {
+            // No code and no error
+            console.error('No authorization code or error found');
+            showError('Invalid callback - no authorization code received.');
+        }
+
+        async function handleCallback() {
+            try {
+                // Use Cognitouth to handle the callback
+                if (!window.CognitoAuth) {
+                    throw new Error('CognitoAuth not loaded');
+                }
+
+                const userInfo = await window.CognitoAuth.handleCallback();
+                
+                if (userInfo) {
+                    console.log(' Authentication successful:', userInfo.email);
+                    showSuccess();
+                    
+                    // Redirect to homepage after 1.5 seconds (loged in state)
+                    setTimeout(() => {
+                        window.location.href = '../index.html';
+                    }, 1500);
+                } else {
+                    throw new Error('Failed to authenticate user');
+                }
+            } catch (error) {
+                console.error(' Callback error:', error);
+                showError(error.message);
+            }
+        }
+
+        function showSuccess() {
+            document.getElementById('loadingState').style.display = 'none';
+            document.getElementById('successState').style.display = 'block';
+        }
+
+        function showError(message) {
+            document.getElementById('loadingState').style.display = 'none';
+            document.getElementById('errorState').style.display = 'block';
+            document.getElementById('errorMessage').textContent = message;
+        }
+    </script>
+</body>
+</html>

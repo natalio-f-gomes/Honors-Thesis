@@ -1,0 +1,62 @@
+.contact-form .form-control:focus,
+.contact-form .form-select:focus {
+    border-color: #28a745;
+    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+}
+
+.btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    transition: all 0.3s ease;
+}
+
+.card {
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+/* Form field animations */
+.form-control, .form-select {
+    transition: all 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    transform: scale(1.01);
+}
+
+/* Label hover effects */
+.form-label {
+    transition: all 0.3s ease;
+}
+
+.form-label:hover i {
+    transform: scale(1.2);
+    display: inline-block;
+}
+
+/* Button disabled state */
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Success message styling */
+.alert-success {
+    border-radius: 15px;
+    border: none;
+    background: linear-gradient(135deg, rgba(40, 167, 69, 0.1), rgba(32, 201, 151, 0.1));
+    color: #28a745;
+    border-left: 4px solid #28a745;
+}
+
+/* Error message styling */
+.alert-danger {
+    border-radius: 15px;
+    border: none;
+    background: linear-gradient(135deg, rgba(220, 53, 69, 0.1), rgba(200, 35, 51, 0.1));
+    color: #dc3545;
+    border-left: 4px solid #dc3545;
+}

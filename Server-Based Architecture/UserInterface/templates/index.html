@@ -1,0 +1,164 @@
+{% extends 'statics/base.html' %}
+{% load static %}
+
+{% block content %}
+<title> {% block title %} Resume Analyzer {% endblock %}</title>
+
+<!-- Messages Section -->
+<div class="container-lg text-center mt-4">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-info border-0 rounded-pill mb-3 animate-fade-in" style="background: linear-gradient(135deg, rgba(13, 202, 240, 0.1), rgba(13, 110, 253, 0.1)); border-left: 4px solid #0d6efd;">
+                <i class="fas fa-info-circle me-2"></i>{{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+<!-- Hero Section -->
+<section class="py-5 mb-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 text-lg-start mb-4 mb-lg-0">
+                <div class="hero-content animate-fade-in">
+                    <!-- Hero Icon -->
+                    <div class="hero-icon mb-4">
+                        <div class="icon-circle mx-auto mx-lg-0" style="width: 80px; height: 80px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                            <i class="fas fa-robot fa-2x text-white"></i>
+                        </div>
+                    </div>
+
+                    <!-- Hero Title -->
+                    <h1 class="display-4 fw-bold mb-4">
+                        <span class="gradient-text">Improve Your Resume</span>
+                        <br>
+                        <span style="color: #495057;">with ResumeScanner</span>
+                    </h1>
+
+                    <!-- Hero Description -->
+                    <p class="lead mb-4 text-muted" style="font-size: 1.25rem; line-height: 1.6;">
+                        This tool is part of an ATP Summer Research initiative designed to help BSU students identify what to improve in their resumes. Upload your resume and get helpful feedback to enhance your job prospects.
+                    </p>
+
+                    <!-- Action Buttons -->
+                    <div class="d-grid gap-3 d-sm-flex justify-content-lg-start">
+                        {% if user.is_authenticated %}
+                            <a type="button" class="btn btn-primary btn-lg px-5" href="{% url 'resume_upload_page' user.username %}">
+                                <i class="fas fa-upload me-2"></i>Get Started
+                            </a>
+                            <a href="" class="btn btn-outline-secondary btn-lg px-5">
+                                <i class="fas fa-tachometer-alt me-2"></i>Go to Dashboard
+                            </a>
+                        {% else %}
+                            <a href="{% url 'register' %}" class="btn btn-outline-secondary btn-lg px-5">
+                                <i class="fas fa-user-plus me-2"></i>Create an Account
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hero Illustration/Features -->
+            <div class="col-lg-6">
+                <div class="hero-features animate-fade-in">
+                    <div class="card border-0 shadow-lg" style="border-radius: 25px; overflow: hidden;">
+                        <div class="card-header text-white py-4" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%);">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-magic fa-2x me-3 opacity-75"></i>
+                                <div>
+                                    <h5 class="mb-1 fw-bold">Resume Feedback</h5>
+                                    <p class="mb-0 opacity-75">Tailored suggestions for BSU students</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body p-4">
+                            <div class="feature-list">
+                                <div class="feature-item d-flex align-items-center mb-3">
+                                    <div class="icon-circle me-3" style="background: linear-gradient(135deg, #007bff, #0056b3); width: 50px; height: 50px;">
+                                        <i class="fas fa-chart-line text-white"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-1 fw-semibold">Skills Analysis</h6>
+                                        <p class="mb-0 text-muted small">Identify your strengths and what’s missing</p>
+                                    </div>
+                                </div>
+
+                                <div class="feature-item d-flex align-items-center mb-3">
+                                    <div class="icon-circle me-3" style="background: linear-gradient(135deg, #6f42c1, #8b5cf6); width: 50px; height: 50px;">
+                                        <i class="fas fa-briefcase text-white"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-1 fw-semibold">Job Matching</h6>
+                                        <p class="mb-0 text-muted small">Explore job titles that align with your experience</p>
+                                    </div>
+                                </div>
+
+                                <div class="feature-item d-flex align-items-center">
+                                    <div class="icon-circle me-3" style="background: linear-gradient(135deg, #fd7e14, #ff6b35); width: 50px; height: 50px;">
+                                        <i class="fas fa-lightbulb text-white"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-1 fw-semibold">Suggestions</h6>
+                                        <p class="mb-0 text-muted small">See what you can improve in your resume</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5 bg-light" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important; border-radius: 30px; margin: 0 1rem;">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-12">
+                <h2 class="display-5 fw-bold gradient-text mb-3">Why Choose ResumeScanner?</h2>
+                <p class="lead text-muted">An ATP Summer Research project helping Bridgewater State University students prepare for their careers</p>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-lg text-center">
+                    <div class="card-body p-4">
+                        <div class="icon-circle mx-auto mb-4" style="width: 70px; height: 70px; background: linear-gradient(135deg, #e83e8c, #d63384);">
+                            <i class="fas fa-rocket fa-2x text-white"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">Fast & Simple</h5>
+                        <p class="text-muted">Upload your resume and receive clear and helpful suggestions in seconds.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-lg text-center">
+                    <div class="card-body p-4">
+                        <div class="icon-circle mx-auto mb-4" style="width: 70px; height: 70px; background: linear-gradient(135deg, #20c997, #17a2b8);">
+                            <i class="fas fa-shield-alt fa-2x text-white"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">Private & Secure</h5>
+                        <p class="text-muted">Your resume is never shared. All files are reviewed securely on our system.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-lg text-center">
+                    <div class="card-body p-4">
+                        <div class="icon-circle mx-auto mb-4" style="width: 70px; height: 70px; background: linear-gradient(135deg, #6c757d, #495057);">
+                            <i class="fas fa-users fa-2x text-white"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">Built by BSU</h5>
+                        <p class="text-muted">Created by Bridgewater State University students and faculty to serve our own community.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

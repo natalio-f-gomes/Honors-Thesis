@@ -1,0 +1,159 @@
+{% extends "statics/base.html" %}
+{% load static %}
+
+{% block content %}
+  <style>
+    .recommendation-container {
+        text-align: center;
+        padding: 2rem;
+    }
+
+    .skills-section {
+        margin-top: 2rem;
+    }
+
+    .skills-title {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .skill-bubbles {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.75rem;
+    }
+
+    .skill-bubble {
+        border-radius: 30px;
+        padding: 0.6rem 1rem;
+        font-size: 0.95rem;
+        color: #fff;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .skill-bubble:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .skill-bubble:active {
+        transform: scale(0.95);
+    }
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const bubbles = document.querySelectorAll(".skill-bubble");
+
+        bubbles.forEach(bubble => {
+            const hue = Math.floor(Math.random() * 360); // random hue for HSL
+            bubble.style.backgroundColor = `hsl(${hue}, 70%, 55%)`;
+        });
+    });
+</script>
+
+
+    {% if user.is_authenticated %}
+        {% if resources_recommended %}
+            {{ resources_recommended }}
+        {% endif %}
+        {% if recommendation %}
+
+            <div class="recommendation-container">
+                {% if recommendation.0 %}
+                    <div class="recommendation-container">
+                    <h4>This is an aggregation of the skills found in the Jobs matched.</h4>
+                    </div>
+                    {% for rec in recommendation %}
+                        <div class="skills-section">
+
+                            <h2 class="skills-title">Recommended Skills</h2>
+
+                            <div class="skills-title">Soft Skills</div>
+                            <div class="skill-bubbles">
+                                {% for skill in rec.soft_skills %}
+                                    <div class="skill-bubble">{{ skill }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="skills-title">Hard Skills</div>
+                            <div class="skill-bubbles">
+                                {% for skill in rec.hard_skills %}
+                                    <div class="skill-bubble">{{ skill }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="skills-title">Education</div>
+                            <div class="skill-bubbles">
+                                {% for item in rec.education %}
+                                    <div class="skill-bubble">{{ item }}</div>
+                                {% endfor %}
+                            </div>
+
+                            {% if rec.certifications %}
+                                <div class="skills-title">Certifications</div>
+                                <div class="skill-bubbles">
+                                    {% for item in rec.certifications %}
+                                        <div class="skill-bubble">{{ item }}</div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+
+                            {% if rec.license %}
+                                <div class="skills-title">License</div>
+                                <div class="skill-bubbles">
+                                    <div class="skill-bubble">{{ rec.license }}</div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="skills-section">
+                        <h3 class="skills-title">Recommended Skills</h3>
+
+                        <div class="skills-title">Soft Skills</div>
+                        <div class="skill-bubbles">
+                            {% for skill in recommendation.soft_skills %}
+                                <div class="skill-bubble">{{ skill }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="skills-title">Hard Skills</div>
+                        <div class="skill-bubbles">
+                            {% for skill in recommendation.hard_skills %}
+                                <div class="skill-bubble">{{ skill }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="skills-title">Education</div>
+                        <div class="skill-bubbles">
+                            {% for item in recommendation.education %}
+                                <div class="skill-bubble">{{ item }}</div>
+                            {% endfor %}
+                        </div>
+
+                        {% if recommendation.certifications %}
+                            <div class="skills-title">Certifications</div>
+                            <div class="skill-bubbles">
+                                {% for item in recommendation.certifications %}
+                                    <div class="skill-bubble">{{ item }}</div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+
+                        {% if recommendation.license %}
+                            <div class="skills-title">License</div>
+                            <div class="skill-bubbles">
+                                <div class="skill-bubble">{{ recommendation.license }}</div>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+        {% else %}
+            <p style="text-align: center;">No recommendations available yet.</p>
+        {% endif %}
+    {% endif %}
+{% endblock %}

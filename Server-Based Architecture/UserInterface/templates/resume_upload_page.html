@@ -1,0 +1,660 @@
+{% extends 'statics/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <!-- Page Header -->
+        <div class="col-12 mb-5">
+            <div class="page-header text-center animate-fade-in">
+                <div class="profile-avatar mx-auto mb-3" style="width: 80px; height: 80px; background: linear-gradient(135deg, #007bff 0%, #0056b3 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 25px rgba(0, 123, 255, 0.3);">
+                    <i class="fas fa-cloud-upload-alt fa-2x text-white"></i>
+                </div>
+                <h2 class="display-5 fw-bold mb-1" style="background: linear-gradient(135deg, #007bff 0%, #0056b3 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                    Upload Your Resume
+                </h2>
+                <p class="text-muted">Analyze your resume and provide personalized feedback</p>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-8 col-xl-6">
+            <!-- Messages -->
+            <div class="container-lg text-center mb-4">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-info border-0 rounded-pill mb-3 animate-fade-in" style="background: linear-gradient(135deg, rgba(13, 202, 240, 0.1), rgba(13, 110, 253, 0.1)); border-left: 4px solid #0d6efd;">
+                            <i class="fas fa-info-circle me-2"></i>{{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <!-- Upload Card -->
+            <div class="card border-0 shadow-lg animate-fade-in" style="border-radius: 25px; overflow: hidden;">
+                <!-- Card Header -->
+                <div class="card-header text-white py-4" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    <div class="d-flex align-items-center">
+                        <div class="icon-circle me-3" style="width: 50px; height: 50px; background: rgba(255, 255, 255, 0.2);">
+                            <i class="fas fa-file-alt text-white"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-1 fw-bold">Resume Analysis</h5>
+                            <p class="mb-0 opacity-75">Upload your resume for insights</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card Body -->
+                <div class="card-body p-5" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);">
+                    <!-- Upload Form -->
+                    <form action="{% url 'resume_file_upload' user.username %}" enctype="multipart/form-data" method="POST" class="upload-form" id="uploadForm">
+                        {% csrf_token %}
+
+                        <!-- File Upload Section -->
+                        <div class="upload-section mb-4">
+                            <div class="file-upload-area border-0 p-5 text-center" style="border: 3px dashed #e9ecef !important; border-radius: 20px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05)); transition: all 0.3s ease;" id="fileUploadArea">
+                                <div class="upload-icon mb-4">
+                                    <div class="icon-circle mx-auto" style="width: 80px; height: 80px; background: linear-gradient(135deg, #28a745, #20c997);">
+                                        <i class="fas fa-cloud-upload-alt fa-2x text-white" id="uploadIcon"></i>
+                                    </div>
+                                </div>
+
+                                <div class="upload-content">
+                                    <h5 class="fw-bold mb-3" id="uploadTitle">Drag & Drop Your Resume</h5>
+                                    <p class="text-muted mb-4" id="uploadDescription">
+                                        or <span class="text-primary fw-semibold" style="cursor: pointer;" onclick="document.getElementById('fileInput').click()">browse files</span>
+                                    </p>
+
+                                    <!-- Hidden File Input - Updated to accept PDF, DOC, and DOCX -->
+                                    <input type="file" id="fileInput" name="resume_file" accept=".pdf,.doc,.docx" style="display: none;" required>
+
+                                    <div class="file-info mt-3" id="fileInfo" style="display: none;">
+                                        <div class="selected-file p-3 rounded-3" style="background: linear-gradient(135deg, rgba(40, 167, 69, 0.1), rgba(32, 201, 151, 0.1)); border: 2px solid #28a745;">
+                                            <div class="d-flex align-items-center justify-content-center">
+                                                <i class="fas fa-file-alt text-success fa-2x me-3" id="fileIcon"></i>
+                                                <div class="text-start">
+                                                    <h6 class="mb-1 fw-bold" id="fileName">Selected File</h6>
+                                                    <small class="text-muted" id="fileSize">File Size</small>
+                                                    <small class="text-info d-block" id="fileType">File Type</small>
+                                                </div>
+                                                <button type="button" class="btn btn-outline-danger btn-sm ms-auto" onclick="removeFile()">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="upload-requirements mt-3">
+                                <small class="text-muted">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Supported format: PDF files only (max 10MB)
+                                </small>
+                                <div class="mt-2">
+                                    <small class="text-muted d-block">
+                                        <i class="fas fa-file-pdf me-1 text-danger"></i>PDF documents only
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Additional Form Fields -->
+                        <div class="form-fields">
+                            <!-- Career Field - FIXED NAME ATTRIBUTE -->
+                            <div class="form-section mb-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="icon-circle me-3" style="width: 45px; height: 45px; background: linear-gradient(135deg, #6f42c1, #8b5cf6);">
+                                        <i class="fas fa-briefcase text-white"></i>
+                                    </div>
+                                    <label class="form-label fw-semibold mb-0">Career Field</label>
+                                </div>
+                                <select class="form-select" name="career_field" id="career_field" required style="border: 2px solid #e9ecef; border-radius: 15px; padding: 0.75rem 1rem;">
+                                     <option value="">Select your career field</option>
+                                    {% for value, label in form.fields.career_field.choices %}
+                                        <option value="{{ value }}">{{ label }}</option>
+                                    {% endfor %}
+                                </select>
+                                <small class="form-text text-muted mt-2">
+                                    <i class="fas fa-lightbulb me-1"></i>This helps us provide more targeted feedback
+                                </small>
+                            </div>
+
+                            <!-- Experience Level - FIXED NAME ATTRIBUTE -->
+                            <div class="form-section mb-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="icon-circle me-3" style="width: 45px; height: 45px; background: linear-gradient(135deg, #fd7e14, #ff6b35);">
+                                        <i class="fas fa-chart-line text-white"></i>
+                                    </div>
+                                    <label class="form-label fw-semibold mb-0">Experience Level</label>
+                                </div>
+                                <select class="form-select" name="experience_level" id="experience_level" required style="border: 2px solid #e9ecef; border-radius: 15px; padding: 0.75rem 1rem;">
+                                     <option value="">Select your experience level</option>
+                                    {% for value, label in form.fields.experience_level.choices %}
+                                        <option value="{{ value }}">{{ label }}</option>
+                                    {% endfor %}
+                                </select>
+                                <small class="form-text text-muted mt-2">
+                                    <i class="fas fa-info-circle me-1"></i>Helps calibrate our analysis to your career stage
+                                </small>
+                            </div>
+
+                         <!-- Preferred Location  -->
+                            <div class="form-section mb-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="icon-circle me-3" style="width: 45px; height: 45px; background: linear-gradient(135deg, #17a2b8, #20c997);">
+                                        <i class="fas fa-map-marker-alt text-white"></i>
+                                    </div>
+                                    <label class="form-label fw-semibold mb-0">Preferred Location</label>
+                                </div>
+                                <input type="text" class="form-control" name="preferred_location" id="preferred_location" required placeholder="EX: UNITED STATES, BOSTON, MA" style="border: 2px solid #e9ecef; border-radius: 15px; padding: 0.75rem 1rem;">
+                                <small class="form-text text-muted mt-2">
+                                    <i class="fas fa-info-circle me-1"></i>Enter your preferred work location
+                                </small>
+                            </div>
+                        </div>
+
+                        <!-- Upload Button -->
+                        <div class="text-center mb-4">
+                            <button type="submit" class="btn btn-primary btn-lg px-5 w-100" style="border-radius: 50px; background: linear-gradient(135deg, #007bff, #0056b3); border: none; transition: all 0.3s ease;" id="uploadBtn" disabled>
+                                <i class="fas fa-upload me-2"></i>Analyze My Resume
+                            </button>
+                        </div>
+
+                        <!-- Progress Bar -->
+                        <div class="upload-progress mt-3" id="uploadProgress" style="display: none;">
+                            <div class="progress" style="height: 8px; border-radius: 4px;">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%; background: linear-gradient(135deg, #007bff, #0056b3);" id="progressBar"></div>
+                            </div>
+                            <small class="text-muted mt-2 d-block text-center" id="progressText">Preparing upload...</small>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Card Footer -->
+                <div class="card-footer text-center py-3" style="background: linear-gradient(135deg, rgba(0, 123, 255, 0.1), rgba(0, 86, 179, 0.1)); border-top: 1px solid rgba(0, 123, 255, 0.2);">
+                    <small class="text-muted">
+                        <i class="fas fa-shield-alt me-1"></i>Your resume is processed securely and privately
+                    </small>
+                </div>
+            </div>
+
+            <!-- Features Section -->
+            <div class="row mt-5">
+                <div class="col-md-4 text-center mb-4">
+                    <div class="feature-highlight p-4">
+                        <div class="icon-circle mx-auto mb-3" style="width: 60px; height: 60px; background: linear-gradient(135deg, #e83e8c, #d63384);">
+                            <i class="fas fa-magic fa-lg text-white"></i>
+                        </div>
+                        <h6 class="fw-bold mb-2">Analysis</h6>
+                        <p class="text-muted small mb-0">Advanced algorithms analyze your resume content, structure, and keywords</p>
+                    </div>
+                </div>
+                <div class="col-md-4 text-center mb-4">
+                    <div class="feature-highlight p-4">
+                        <div class="icon-circle mx-auto mb-3" style="width: 60px; height: 60px; background: linear-gradient(135deg, #20c997, #17a2b8);">
+                            <i class="fas fa-bullseye fa-lg text-white"></i>
+                        </div>
+                        <h6 class="fw-bold mb-2">Targeted Feedback</h6>
+                        <p class="text-muted small mb-0">Get specific recommendations based on your industry and experience level</p>
+                    </div>
+                </div>
+                <div class="col-md-4 text-center mb-4">
+                    <div class="feature-highlight p-4">
+                        <div class="icon-circle mx-auto mb-3" style="width: 60px; height: 60px; background: linear-gradient(135deg, #6c757d, #495057);">
+                            <i class="fas fa-rocket fa-lg text-white"></i>
+                        </div>
+                        <h6 class="fw-bold mb-2">Instant Results</h6>
+                        <p class="text-muted small mb-0">Receive comprehensive analysis and improvement suggestions in seconds</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .page-header {
+        animation: fadeInUp 0.8s ease-out;
+    }
+
+    .card {
+        transition: all 0.3s ease;
+        animation: fadeInUp 0.6s ease-out;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.1) !important;
+    }
+
+    .file-upload-area {
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .file-upload-area:hover {
+        border-color: #007bff !important;
+        background: linear-gradient(135deg, rgba(0, 123, 255, 0.1), rgba(0, 86, 179, 0.1)) !important;
+        transform: translateY(-2px);
+    }
+
+    .file-upload-area.drag-over {
+        border-color: #28a745 !important;
+        background: linear-gradient(135deg, rgba(40, 167, 69, 0.1), rgba(32, 201, 151, 0.1)) !important;
+        transform: scale(1.02);
+    }
+
+    .form-section {
+        padding: 1.5rem;
+        border-radius: 15px;
+        background: rgba(102, 126, 234, 0.05);
+        margin-bottom: 1.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .form-section:hover {
+        background: rgba(102, 126, 234, 0.1);
+        transform: translateX(5px);
+    }
+
+    .icon-circle {
+        transition: all 0.3s ease;
+    }
+
+    .icon-circle:hover {
+        transform: scale(1.1) rotate(5deg);
+    }
+
+    .form-control, .form-select {
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    }
+
+    .btn {
+        transition: all 0.3s ease;
+    }
+
+    .btn:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+
+    .btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    .feature-highlight {
+        transition: all 0.3s ease;
+        border-radius: 15px;
+        cursor: pointer;
+        border: 2px solid transparent;
+    }
+
+    .feature-highlight:hover {
+        background: rgba(102, 126, 234, 0.05);
+        transform: translateY(-5px);
+        border-color: rgba(102, 126, 234, 0.2);
+    }
+
+    .feature-highlight .icon-circle {
+        transition: all 0.3s ease;
+    }
+
+    .feature-highlight:hover .icon-circle {
+        transform: scale(1.2) rotate(10deg);
+    }
+
+    .selected-file {
+        animation: slideInDown 0.5s ease-out;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes slideInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .animate-fade-in {
+        animation: fadeInUp 0.8s ease-out;
+    }
+
+    /* Upload states */
+    .uploading .upload-icon .icon-circle {
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.1);
+        }
+        100% {
+            transform: scale(1);
+        }
+    }
+
+    /* Responsive improvements */
+    @media (max-width: 768px) {
+        .form-section {
+            padding: 1rem;
+        }
+
+        .file-upload-area {
+            padding: 2rem !important;
+        }
+
+        .feature-highlight {
+            margin-bottom: 2rem;
+        }
+    }
+
+    /* Animation delays for staggered effect */
+    .feature-highlight:nth-child(1) { animation: fadeInUp 0.8s ease-out 0.1s both; }
+    .feature-highlight:nth-child(2) { animation: fadeInUp 0.8s ease-out 0.2s both; }
+    .feature-highlight:nth-child(3) { animation: fadeInUp 0.8s ease-out 0.3s both; }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const fileInput = document.getElementById('fileInput');
+        const careerField = document.getElementById('career_field');
+        const experienceLevel = document.getElementById('experience_level');
+        const preferredLocation = document.getElementById('preferred_location');
+        const fileUploadArea = document.getElementById('fileUploadArea');
+        const fileInfo = document.getElementById('fileInfo');
+        const fileName = document.getElementById('fileName');
+        const fileSize = document.getElementById('fileSize');
+        const fileType = document.getElementById('fileType');
+        const fileIcon = document.getElementById('fileIcon');
+        const uploadBtn = document.getElementById('uploadBtn');
+        const uploadForm = document.getElementById('uploadForm');
+        const uploadProgress = document.getElementById('uploadProgress');
+        const progressBar = document.getElementById('progressBar');
+        const progressText = document.getElementById('progressText');
+        const uploadTitle = document.getElementById('uploadTitle');
+        const uploadDescription = document.getElementById('uploadDescription');
+        const uploadIcon = document.getElementById('uploadIcon');
+
+        // Store the dropped file for cross-browser compatibility
+        let droppedFile = null;
+
+        // File input change handler
+        fileInput.addEventListener('change', handleFileSelect);
+
+        // Drag and drop handlers
+        fileUploadArea.addEventListener('dragover', handleDragOver);
+        fileUploadArea.addEventListener('dragleave', handleDragLeave);
+        fileUploadArea.addEventListener('drop', handleFileDrop);
+        fileUploadArea.addEventListener('click', function(e) {
+            // Only trigger if not clicking the remove button
+            if (!e.target.closest('.btn-outline-danger')) {
+                fileInput.click();
+            }
+        });
+
+        function handleFileSelect(e) {
+            const file = e.target.files[0];
+            droppedFile = null; // Clear dropped file when using file input
+            if (file) {
+                if (validateFile(file)) {
+                    displayFileInfo(file);
+                } else {
+                    fileInput.value = '';
+                }
+            }
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            fileUploadArea.classList.add('drag-over');
+        }
+
+        function handleDragLeave(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            fileUploadArea.classList.remove('drag-over');
+        }
+
+        function handleFileDrop(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            fileUploadArea.classList.remove('drag-over');
+
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                const file = files[0];
+
+                if (validateFile(file)) {
+                    // Store dropped file for cross-browser compatibility
+                    droppedFile = file;
+                    displayFileInfo(file);
+
+                    // Clear the file input to avoid conflicts
+                    fileInput.value = '';
+                }
+            }
+        }
+
+        function validateFile(file) {
+            // Check file type - ONLY PDF
+            const fileName = file.name.toLowerCase();
+            const fileType = file.type.toLowerCase();
+
+            // Check both filename extension and MIME type for better compatibility
+            const isPDF = fileName.endsWith('.pdf') || fileType === 'application/pdf';
+
+            if (!isPDF) {
+                alert('Please upload only PDF files.');
+                return false;
+            }
+
+            // Check file size (10MB limit)
+            const maxSize = 10 * 1024 * 1024; // 10MB
+            if (file.size > maxSize) {
+                alert('File size exceeds 10MB limit. Please choose a smaller file.');
+                return false;
+            }
+
+            return true;
+        }
+
+        function displayFileInfo(file) {
+            fileName.textContent = file.name;
+            fileSize.textContent = formatFileSize(file.size);
+            fileType.textContent = 'PDF Document';
+
+            // Update file icon
+            fileIcon.className = 'fas fa-file-pdf text-danger fa-2x me-3';
+
+            fileInfo.style.display = 'block';
+            uploadTitle.textContent = 'File Selected';
+            uploadDescription.style.display = 'none';
+            uploadIcon.className = 'fas fa-check-circle fa-2x text-white';
+
+            // Update upload area styling
+            fileUploadArea.style.borderColor = '#28a745';
+            fileUploadArea.style.background = 'linear-gradient(135deg, rgba(40, 167, 69, 0.1), rgba(32, 201, 151, 0.1))';
+
+            // Check form validity
+            checkFormValidity();
+        }
+
+        function removeFile() {
+            fileInput.value = '';
+            droppedFile = null;
+            fileInfo.style.display = 'none';
+            uploadTitle.textContent = 'Drag & Drop Your Resume';
+            uploadDescription.style.display = 'block';
+            uploadIcon.className = 'fas fa-cloud-upload-alt fa-2x text-white';
+
+            // Reset upload area styling
+            fileUploadArea.style.borderColor = '#e9ecef';
+            fileUploadArea.style.background = 'linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05))';
+
+            // Check form validity
+            checkFormValidity();
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // Form submission with progress
+        uploadForm.addEventListener('submit', function(e) {
+            e.preventDefault(); // Always prevent default to handle manually
+
+            // Get the file - either from input or dropped
+            const file = droppedFile || (fileInput.files.length > 0 ? fileInput.files[0] : null);
+
+            // Check if file exists
+            if (!file) {
+                alert('Please select a file to upload.');
+                return false;
+            }
+
+            // Check if career field is selected
+            if (!careerField.value) {
+                alert('Please select your career field.');
+                return false;
+            }
+
+            // Check if experience level is selected
+            if (!experienceLevel.value) {
+                alert('Please select your experience level.');
+                return false;
+            }
+
+            // Check if preferred location is filled
+            if (!preferredLocation.value.trim()) {
+                alert('Please enter your preferred location.');
+                return false;
+            }
+
+            // Validate file again before submission
+            if (!validateFile(file)) {
+                return false;
+            }
+
+            // Create FormData and append all fields manually
+            const formData = new FormData();
+            formData.append('resume_file', file);
+            formData.append('career_field', careerField.value);
+            formData.append('experience_level', experienceLevel.value);
+            formData.append('preferred_location', preferredLocation.value);
+
+            // Add CSRF token
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            formData.append('csrfmiddlewaretoken', csrfToken);
+
+            // Show progress and update button
+            uploadProgress.style.display = 'block';
+            uploadBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Analyzing Resume...';
+            uploadBtn.disabled = true;
+
+            // Simulate progress
+            simulateProgress();
+
+            // Submit via fetch for better control
+            fetch(uploadForm.action, {
+                method: 'POST',
+                body: formData,
+                credentials: 'same-origin'
+            })
+            .then(response => {
+                if (response.redirected) {
+                    window.location.href = response.url;
+                } else {
+                    return response.text().then(text => {
+                        document.open();
+                        document.write(text);
+                        document.close();
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred during upload. Please try again.');
+                uploadBtn.innerHTML = '<i class="fas fa-upload me-2"></i>Analyze My Resume';
+                uploadBtn.disabled = false;
+                uploadProgress.style.display = 'none';
+            });
+
+            return false;
+        });
+
+        function simulateProgress() {
+            let progress = 0;
+            const interval = setInterval(function() {
+                progress += Math.random() * 15;
+                if (progress > 90) {
+                    progress = 90;
+                    clearInterval(interval);
+                }
+
+                progressBar.style.width = progress + '%';
+
+                if (progress < 30) {
+                    progressText.textContent = 'Uploading file...';
+                } else if (progress < 60) {
+                    progressText.textContent = 'Processing document...';
+                } else if (progress < 90) {
+                    progressText.textContent = 'Analyzing content...';
+                } else {
+                    progressText.textContent = 'Finalizing results...';
+                }
+            }, 200);
+        }
+
+        // Form validation
+        function checkFormValidity() {
+            const isFileSelected = droppedFile !== null || fileInput.files.length > 0;
+            const isCareerFieldSelected = careerField.value !== '';
+            const isExperienceLevelSelected = experienceLevel.value !== '';
+            const isLocationFilled = preferredLocation.value.trim() !== '';
+
+            const isValid = isFileSelected && isCareerFieldSelected && isExperienceLevelSelected && isLocationFilled;
+
+            uploadBtn.disabled = !isValid;
+        }
+
+        // Add event listeners for form fields
+        careerField.addEventListener('change', checkFormValidity);
+        experienceLevel.addEventListener('change', checkFormValidity);
+        preferredLocation.addEventListener('input', checkFormValidity);
+
+        // Expose removeFile function globally
+        window.removeFile = removeFile;
+    });
+</script>
+{% endblock %}

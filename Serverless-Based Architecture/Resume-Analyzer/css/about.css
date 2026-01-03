@@ -1,0 +1,113 @@
+
+.page-header {
+    animation: fadeInUp 0.8s ease-out;
+}
+
+.card, .service-card, .team-card {
+    transition: all 0.3s ease;
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.card:hover, .service-card:hover, .team-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15) !important;
+}
+
+.mission-point, .tech-item {
+    transition: all 0.3s ease;
+    border-radius: 15px;
+}
+
+.mission-point:hover, .tech-item:hover {
+    background: rgba(102, 126, 234, 0.05);
+    transform: translateY(-5px);
+}
+
+.stat-item {
+    transition: all 0.3s ease;
+}
+
+.stat-item:hover {
+    transform: scale(1.05);
+}
+
+.team-avatar {
+    transition: all 0.3s ease;
+}
+
+.team-card:hover .team-avatar {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.social-links a {
+    transition: all 0.3s ease;
+    font-size: 1.2rem;
+}
+
+.social-links a:hover {
+    transform: translateY(-3px);
+}
+
+.cta-section {
+    animation: fadeInUp 0.8s ease-out;
+}
+
+.stats-section {
+    position: relative;
+    overflow: hidden;
+}
+
+.stats-section::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 2px,
+        rgba(255,255,255,0.05) 2px,
+        rgba(255,255,255,0.05) 4px
+    );
+    animation: movePattern 20s linear infinite;
+}
+
+@keyframes movePattern {
+    0% { transform: translateX(0) translateY(0); }
+    100% { transform: translateX(50px) translateY(50px); }
+}
+
+.text-purple { 
+    color: #6f42c1; 
+}
+
+/* Staggered animations */
+.service-card:nth-child(1) { animation-delay: 0.1s; }
+.service-card:nth-child(2) { animation-delay: 0.2s; }
+.service-card:nth-child(3) { animation-delay: 0.3s; }
+.service-card:nth-child(4) { animation-delay: 0.4s; }
+
+.team-card:nth-child(1) { animation-delay: 0.1s; }
+.team-card:nth-child(2) { animation-delay: 0.2s; }
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+    .display-4 {
+        font-size: 2.5rem;
+    }
+
+    .service-card .d-flex {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .service-card .icon-circle {
+        margin-bottom: 1rem;
+    }
+
+    .stats-section .row {
+        gap: 2rem;
+    }
+}

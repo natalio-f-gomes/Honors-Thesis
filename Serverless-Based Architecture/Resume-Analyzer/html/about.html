@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>About Us - Resume Analyzer</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/about.css">
+</head>
+<body>
+    <!-- Navigation (same as index.html) -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand me-2 fw-bold gradient-text fs-3" href="../index.html">
+                <i class="fas fa-file-alt me-2"></i>Resume Analyzer
+            </a>
+            <button class="navbar-toggler shadow-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarButtonsExample">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarButtonsExample">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
+                <div class="d-flex align-items-center">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link fw-semibold position-relative" href="../index.html">
+                                <i class="fas fa-home me-2"></i>Home
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link fw-semibold position-relative" href="about.html">
+                                <i class="fas fa-info-circle me-2"></i>About
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link fw-semibold position-relative" href="contact.html">
+                                <i class="fas fa-envelope me-2"></i>Contact
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link fw-semibold position-relative" href="feedback.html">
+                                <i class="fas fa-comment-dots me-2"></i>Feedback
+                            </a>
+                        </li>
+                        <li class="nav-item" id="accountNavItem" style="display: none;">
+                            <a class="nav-link fw-semibold position-relative" href="account.html">
+                                <i class="fas fa-user-circle me-2"></i>My Account
+                            </a>
+                        </li>
+                    </ul>
+                    <button id="loginBtn" class="btn btn-success px-4 me-2 ms-3">
+                        <i class="fas fa-sign-in-alt me-2"></i>Login
+                    </button>
+                    <button id="logoutBtn" class="btn btn-danger px-4 me-2 ms-3" style="display: none;">
+                        <i class="fas fa-sign-out-alt me-2"></i>Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="animate-fade-in">
+        <div class="container py-5">
+            <!-- Hero Section -->
+            <div class="row justify-content-center mb-5">
+                <div class="col-12">
+                    <div class="page-header text-center animate-fade-in">
+                        <div class="profile-avatar mx-auto mb-4" style="width: 100px; height: 100px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);">
+                            <i class="fas fa-users fa-3x text-white"></i>
+                        </div>
+                        <h1 class="display-4 fw-bold mb-3 gradient-text">About Resume-Analyzer</h1>
+                        <p class="lead text-muted">A research project designed to help students improve their resumes through our analysis and personalized feedback</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project Origin Story -->
+            <div class="row justify-content-center mb-5">
+                <div class="col-lg-10">
+                    <div class="card border-0 shadow-lg animate-fade-in" style="border-radius: 25px; overflow: hidden;">
+                        <div class="card-header text-white py-4" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%);">
+                            <div class="d-flex align-items-center justify-content-center">
+                                <div class="icon-circle me-3" style="width: 60px; height: 60px; background: rgba(255, 255, 255, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-lightbulb fa-lg text-white"></i>
+                                </div>
+                                <div class="text-center">
+                                    <h3 class="mb-1 fw-bold">Our Story</h3>
+                                    <p class="mb-0 opacity-75">Born from real student struggles</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body p-5" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);">
+                            <div class="text-center">
+                                <h4 class="fw-bold mb-4 text-primary">From Frustration to Innovation</h4>
+                                <p class="lead text-muted mb-4">
+                                    ResumeScanner was born out of a genuine need experienced by its creator during the summer of 2023. After applying to hundreds of software engineering internships and facing countless rejections without feedback, the question arose: "What if there was a way to get constructive feedback on resumes before applying?"
+                                </p>
+                                <p class="text-muted mb-4">
+                                    This project represents more than just a web application—it's a research initiative developed as part of the Adrian Tinsley Program (ATP) at Bridgewater State University, aimed at solving a real problem that affects countless students in their job search journey.
+                                </p>
+                                <div class="row g-4">
+                                    <div class="col-md-4">
+                                        <div class="mission-point p-3">
+                                            <div class="icon-circle mx-auto mb-3" style="width: 60px; height: 60px; background: linear-gradient(135deg, #007bff, #0056b3); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                                <i class="fas fa-graduation-cap text-white"></i>
+                                            </div>
+                                            <h6 class="fw-bold">Academic Research</h6>
+                                            <p class="text-muted small mb-0">Built through rigorous research and academic methodologies</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mission-point p-3">
+                                            <div class="icon-circle mx-auto mb-3" style="width: 60px; height: 60px; background: linear-gradient(135deg, #28a745, #20c997); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                                <i class="fas fa-users text-white"></i>
+                                            </div>
+                                            <h6 class="fw-bold">Student-Focused</h6>
+                                            <p class="text-muted small mb-0">Designed specifically for BSU students and beyond</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mission-point p-3">
+                                            <div class="icon-circle mx-auto mb-3" style="width: 60px; height: 60px; background: linear-gradient(135deg, #6f42c1, #8b5cf6); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                                <i class="fas fa-heart text-white"></i>
+                                            </div>
+                                            <h6 class="fw-bold">Free Access</h6>
+                                            <p class="text-muted small mb-0">Committed to providing free, accessible career guidance</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- What We Do -->
+            <div class="row mb-5">
+                <div class="col-12">
+                    <div class="text-center mb-5">
+                        <h2 class="display-5 fw-bold gradient-text mb-3">How It Works</h2>
+                        <p class="lead text-muted">Advanced NLP technology meets practical career guidance</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 mb-4">
+                    <div class="service-card h-100 border-0 shadow-lg" style="border-radius: 20px;">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-start">
+                                <div class="icon-circle me-4 flex-shrink-0" style="width: 70px; height: 70px; background: linear-gradient(135deg, #e83e8c, #d63384); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-search fa-lg text-white"></i>
+                                </div>
+                                <div>
+                                    <h5 class="fw-bold mb-3">Intelligent Resume Analysis</h5>
+                                    <p class="text-muted mb-3">Our Natural Language Processing algorithms analyze your resume's content, structure, keywords, and formatting to provide comprehensive, personalized feedback.</p>
+                                    <ul class="list-unstyled">
+                                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>NLP-powered content analysis</li>
+                                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Keyword optimization suggestions</li>
+                                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>ATS compatibility scoring</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 mb-4">
+                    <div class="service-card h-100 border-0 shadow-lg" style="border-radius: 20px;">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-start">
+                                <div class="icon-circle me-4 flex-shrink-0" style="width: 70px; height: 70px; background: linear-gradient(135deg, #17a2b8, #138496); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-briefcase fa-lg text-white"></i>
+                                </div>
+                                <div>
+                                    <h5 class="fw-bold mb-3">Job Description Matching</h5>
+                                    <p class="text-muted mb-3">Compare your resume against real job descriptions from platforms like LinkedIn and Indeed to identify gaps and opportunities for improvement.</p>
+                                    <ul class="list-unstyled">
+                                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Real-time job market analysis</li>
+                                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Skill gap identification</li>
+                                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Industry-specific feedback</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 mb-4">
+                    <div class="service-card h-100 border-0 shadow-lg" style="border-radius: 20px;">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-start">
+                                <div class="icon-circle me-4 flex-shrink-0" style="width: 70px; height: 70px; background: linear-gradient(135deg, #fd7e14, #ff6b35); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-graduation-cap fa-lg text-white"></i>
+                                </div>
+                                <div>
+                                    <h5 class="fw-bold mb-3">BSU Resources Integration</h5>
+                                    <p class="text-muted mb-3">Get personalized recommendations for BSU's academic and career services, including tutoring, courses, and on-campus job opportunities.</p>
+                                    <ul class="list-unstyled">
+                                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Campus resource recommendations</li>
+                                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Academic program guidance</li>
+                                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Career center integration</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 mb-4">
+                    <div class="service-card h-100 border-0 shadow-lg" style="border-radius: 20px;">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-start">
+                                <div class="icon-circle me-4 flex-shrink-0" style="width: 70px; height: 70px; background: linear-gradient(135deg, #6c757d, #495057); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-book fa-lg text-white"></i>
+                                </div>
+                                <div>
+                                    <h5 class="fw-bold mb-3">Curated Learning Resources</h5>
+                                    <p class="text-muted mb-3">Access a carefully curated list of online courses, certifications, and learning materials to help you develop the skills identified in your analysis.</p>
+                                    <ul class="list-unstyled">
+                                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Skill development recommendations</li>
+                                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Certification guidance</li>
+                                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Learning pathway suggestions</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Technical Architecture -->
+            <div class="row mb-5">
+                <div class="col-12">
+                    <div class="text-center mb-5">
+                        <h2 class="display-5 fw-bold gradient-text mb-3">Built with Modern Technology</h2>
+                        <p class="lead text-muted">Leveraging cutting-edge technologies for reliable performance</p>
+                    </div>
+                </div>
+                <div class="col-lg-8 mx-auto">
+                    <div class="card border-0 shadow-lg" style="border-radius: 20px;">
+                        <div class="card-body p-5">
+                            <div class="row g-4 text-center">
+                                <div class="col-md-3">
+                                    <div class="tech-item">
+                                        <div class="icon-circle mx-auto mb-3" style="width: 60px; height: 60px; background: linear-gradient(135deg, #f7df1e, #f0d000); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                            <i class="fab fa-js-square fa-lg" style="color: #323330;"></i>
+                                        </div>
+                                        <h6 class="fw-bold">JavaScript</h6>
+                                        <p class="text-muted small">Frontend interactivity</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="tech-item">
+                                        <div class="icon-circle mx-auto mb-3" style="width: 60px; height: 60px; background: linear-gradient(135deg, #3776ab, #306998); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                            <i class="fab fa-python fa-lg text-white"></i>
+                                        </div>
+                                        <h6 class="fw-bold">Python & Django</h6>
+                                        <p class="text-muted small">Backend processing</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="tech-item">
+                                        <div class="icon-circle mx-auto mb-3" style="width: 60px; height: 60px; background: linear-gradient(135deg, #336791, #2d5a87); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                            <i class="fas fa-database fa-lg text-white"></i>
+                                        </div>
+                                        <h6 class="fw-bold">PostgreSQL</h6>
+                                        <p class="text-muted small">Data management</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="tech-item">
+                                        <div class="icon-circle mx-auto mb-3" style="width: 60px; height: 60px; background: linear-gradient(135deg, #ff9900, #ff7f00); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                            <i class="fab fa-aws fa-lg text-white"></i>
+                                        </div>
+                                        <h6 class="fw-bold">AWS</h6>
+                                        <p class="text-muted small">Cloud hosting</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statistics -->
+            <div class="row mb-5">
+                <div class="col-12">
+                    <div class="stats-section py-5 px-4 rounded-3" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                        <div class="text-center text-white mb-5">
+                            <h2 class="fw-bold mb-3">Research Impact</h2>
+                            <p class="opacity-75">Built through the Adrian Tinsley Program at Bridgewater State University</p>
+                        </div>
+                        <div class="row g-4">
+                            <div class="col-md-4 col-sm-6 text-center">
+                                <div class="stat-item">
+                                    <div class="stat-number display-4 fw-bold text-white mb-2">500+</div>
+                                    <div class="stat-label text-white opacity-75">Resumes Analyzed</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-6 text-center">
+                                <div class="stat-item">
+                                    <div class="stat-number display-4 fw-bold text-white mb-2">10</div>
+                                    <div class="stat-label text-white opacity-75">Week Development Cycle</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-6 text-center">
+                                <div class="stat-item">
+                                    <div class="stat-number display-4 fw-bold text-white mb-2">24/7</div>
+                                    <div class="stat-label text-white opacity-75">Availability</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Section -->
+            <div class="row mb-5">
+                <div class="col-12">
+                    <div class="text-center mb-5">
+                        <h2 class="display-5 fw-bold gradient-text mb-3">Research Team</h2>
+                        <p class="lead text-muted">The minds behind this innovative project</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-12 col-md-6 mb-4">
+                    <div class="team-card text-center border-0 shadow-lg h-100" style="border-radius: 20px;">
+                        <div class="card-body p-4">
+                            <div class="team-avatar mx-auto mb-3" style="width: 100px; height: 100px; background: linear-gradient(135deg, #007bff, #0056b3); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-user-graduate fa-2x text-white"></i>
+                            </div>
+                            <h5 class="fw-bold mb-2">Natalio Fernandes Teixeira Gomes</h5>
+                            <p class="text-primary fw-semibold mb-3">BSU Computer Science Student & Project Lead</p>
+                            <p class="text-muted small">A Computer Science student with a passion for solving real-world problems through technology. Currently pursuing his degree at Bridgewater State University while serving in the Army Reserve. His personal experience with job search challenges inspired this research project.</p>
+                            <div class="social-links mt-3">
+                                <a href="https://www.linkedin.com/in/nataliogomes/" class="text-decoration-none me-3"><i class="fab fa-linkedin text-primary"></i></a>
+                                <a href="#" class="text-decoration-none"><i class="fab fa-github text-dark"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Research Background -->
+            <div class="row mb-5">
+                <div class="col-lg-10 mx-auto">
+                    <div class="card border-0 shadow-lg" style="border-radius: 20px;">
+                        <div class="card-body p-5">
+                            <h3 class="fw-bold mb-4 text-center gradient-text">Research Methodology</h3>
+                            <p class="text-muted mb-4">
+                                This project follows a structured software development lifecycle as part of the Adrian Tinsley Program research initiative. Our methodology integrates academic research with practical application, ensuring both scientific rigor and real-world utility.
+                            </p>
+                            <div class="row g-4">
+                                <div class="col-md-6">
+                                    <h6 class="fw-bold text-primary">Research Question</h6>
+                                    <p class="text-muted small">How can technology be used to provide job seekers with constructive feedback on their resumes and provide resources where users can develop those skills?</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6 class="fw-bold text-primary">Target Outcome</h6>
+                                    <p class="text-muted small">A functional web application that generates personalized feedback and resources to support users in improving their resumes and enhancing their job search success.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Call to Action -->
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="cta-section text-center p-5 rounded-3" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border: 3px solid transparent; background-clip: padding-box;">
+                        <div class="icon-circle mx-auto mb-4" style="width: 80px; height: 80px; background: linear-gradient(135deg, #28a745, #20c997); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-rocket fa-2x text-white"></i>
+                        </div>
+                        <h3 class="fw-bold mb-3">Ready to Improve Your Resume?</h3>
+                        <p class="text-muted mb-4">Join the research community and help us improve career outcomes for students everywhere. Your participation contributes to ongoing research while enhancing your own job search prospects.</p>
+                        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center" id="ctaButtons">
+                            <!-- Buttons will be dynamically inserted here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer (same as index.html) -->
+    <footer class="mt-5 py-5">
+        <div class="container">
+            <div class="row mt-5">
+                <div class="col-12">
+                    <div class="footer-bottom text-center py-4" style="border-top: 2px solid transparent; background: linear-gradient(white, white) padding-box, linear-gradient(135deg, #667eea, #764ba2) border-box; border-radius: 20px;">
+                        <div class="d-flex align-items-center justify-content-center flex-wrap">
+                            <div class="icon-circle me-3 mb-2 mb-sm-0" style="width: 40px; height: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                                <i class="fas fa-file-alt text-white"></i>
+                            </div>
+                            <span class="gradient-text fw-bold fs-5 me-3">Resume Analyzer</span>
+                            <span class="text-muted">© <span id="currentYear">2024</span> All rights reserved</span>
+                        </div>
+                        <a href="terms.html">Terms and Conditions</a>
+                        <div class="social-links mt-3">
+                            <a href="#" class="btn btn-outline-primary btn-sm rounded-circle me-2" style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center;">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" class="btn btn-outline-primary btn-sm rounded-circle me-2" style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center;">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                            <a href="#" class="btn btn-outline-primary btn-sm rounded-circle" style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center;">
+                                <i class="fab fa-github"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/auth-cognito-hosted.js"></script>
+    <script src="../js/main.js"></script>
+    <script src="../js/about.js"></script>
+</body>
+</html>

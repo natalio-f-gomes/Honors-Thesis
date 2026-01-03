@@ -1,0 +1,550 @@
+{% extends 'statics/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-lg py-4">
+    {% if user.is_authenticated %}
+        <div class="row">
+            <!-- Page Header -->
+            <div class="col-12 mb-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h2 class="mb-1" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                            <i class="fas fa-briefcase me-2"></i>Matching Jobs
+                        </h2>
+                        <p class="text-muted mb-0">Jobs tailored to your resume and skills</p>
+                    </div>
+                    <div>
+                         <a href="{% url 'recommendation_skills' request.user.username resume_id %}" class="btn btn-info">
+                            <i class="fas fa-arrow-up me-1"></i>Our Recommendation
+                        </a>
+                    </div>
+                    <div>
+                        <a href="{% url 'home' %}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left me-1"></i>Back to Resume
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            {% if jobs_matched %}
+                <!-- Jobs Count -->
+                <div class="col-12 mb-4">
+                    <div class="alert alert-success border-0 rounded-pill">
+                        <i class="fas fa-check-circle me-2"></i>
+                        Found <strong>{{ jobs_matched|length }}</strong> matching job{{ jobs_matched|length|pluralize }} for your profile!
+                    </div>
+                </div>
+
+                <!-- Jobs List -->
+                {% for job in jobs_matched %}
+                    <div class="col-12 mb-4">
+                        <div class="card border-0 shadow-sm h-100" style="border-radius: 15px; transition: all 0.3s ease;">
+                            <div class="card-body p-4">
+                                <div class="row">
+                                    <div class="col-lg-8">
+                                        <!-- Job Title and Company -->
+                                        <div class="mb-3">
+                                            <h5 class="mb-1 text-primary">
+                                                <i class="fas fa-briefcase me-2"></i>{{ job.job_title|default:"Job Title Not Available" }}
+                                            </h5>
+                                            <h6 class="mb-2 text-dark">
+                                                <i class="fas fa-building me-2"></i>{{ job.employer_name|default:"Company Name Not Available" }}
+                                            </h6>
+                                            {% if job.employer_website %}
+                                                <small class="text-muted">
+                                                    <i class="fas fa-globe me-1"></i>
+                                                    <a href="{{ job.employer_website }}" target="_blank" class="text-decoration-none">{{ job.employer_website }}</a>
+                                                </small>
+                                            {% endif %}
+                                        </div>
+
+                                        <!-- Job Details -->
+                                        <div class="row mb-3">
+                                            {% if job.job_location %}
+                                                <div class="col-md-6 mb-2">
+                                                    <small class="text-muted">
+                                                        <i class="fas fa-map-marker-alt me-1"></i>
+                                                        <strong>Location:</strong> {{ job.job_location }}
+                                                        {% if job.job_is_remote %}<span class="badge bg-info-subtle text-info ms-1">Remote</span>{% endif %}
+                                                    </small>
+                                                </div>
+                                            {% endif %}
+                                            {% if job.job_employment_type %}
+                                                <div class="col-md-6 mb-2">
+                                                    <small class="text-muted">
+                                                        <i class="fas fa-clock me-1"></i>
+                                                        <strong>Type:</strong> {{ job.job_employment_type }}
+                                                    </small>
+                                                </div>
+                                            {% endif %}
+                                            {% if job.job_posted_at %}
+                                                <div class="col-md-6 mb-2">
+                                                    <small class="text-muted">
+                                                        <i class="fas fa-calendar me-1"></i>
+                                                        <strong>Posted:</strong> {{ job.job_posted_at|default:"Recently" }}
+                                                    </small>
+                                                </div>
+                                            {% endif %}
+                                            {% if job.job_country %}
+                                                <div class="col-md-6 mb-2">
+                                                    <small class="text-muted">
+                                                        <i class="fas fa-globe me-1"></i>
+                                                        <strong>Country:</strong> {{ job.job_country|upper }}
+                                                    </small>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+
+                                        <!-- Salary Information -->
+                                        {% if job.job_min_salary or job.job_max_salary %}
+                                            <div class="mb-3">
+                                                <div class="d-flex align-items-center">
+                                                    <i class="fas fa-dollar-sign me-2 text-success"></i>
+                                                    <strong class="text-success">Salary: </strong>
+                                                    <span class="ms-2">
+                                                        {% if job.job_min_salary and job.job_max_salary %}
+                                                            ${{ job.job_min_salary|floatformat:0 }} - ${{ job.job_max_salary|floatformat:0 }}
+                                                        {% elif job.job_min_salary %}
+                                                            From ${{ job.job_min_salary|floatformat:0 }}
+                                                        {% elif job.job_max_salary %}
+                                                            Up to ${{ job.job_max_salary|floatformat:0 }}
+                                                        {% endif %}
+                                                        {% if job.job_salary_period %}
+                                                            per {{ job.job_salary_period|lower }}
+                                                        {% endif %}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+
+                                        <!-- Job Benefits -->
+                                        {% if job.job_benefits %}
+                                            <div class="mb-3">
+                                                <small class="text-muted d-block mb-2"><strong>Benefits:</strong></small>
+                                                <div class="d-flex flex-wrap gap-1">
+                                                    {% for benefit in job.job_benefits %}
+                                                        <span class="badge bg-success-subtle text-success">
+                                                            {{ benefit|title|slice:":20" }}{% if benefit|length > 20 %}...{% endif %}
+                                                        </span>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        {% endif %}
+
+                                        <!-- Job Description -->
+                                        {% if job.job_description %}
+                                            <div class="mb-3">
+                                                <div class="description-container">
+                                                    <p class="text-dark mb-2" style="line-height: 1.6;">
+                                                        <strong>Job Description:</strong>
+                                                    </p>
+                                                    <div class="description-text" style="max-height: 200px; overflow-y: auto; background: #f8f9fa; padding: 1rem; border-radius: 8px; border-left: 4px solid #007bff;">
+                                                        {{ job.job_description|linebreaks|truncatewords:100 }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+
+                                        <!-- Job Highlights -->
+                                        {% if job.job_highlights %}
+                                            <div class="mb-3">
+                                                <div class="row">
+                                                    {% if job.job_highlights.Qualifications %}
+                                                        <div class="col-lg-4 col-md-6 mb-3">
+                                                            <div class="highlight-section">
+                                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                                    <h6 class="text-primary mb-0">
+                                                                        <i class="fas fa-check-circle me-1"></i>Qualifications
+                                                                    </h6>
+                                                                    <button class="btn btn-sm btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#qualifications-{{ forloop.counter }}" aria-expanded="false">
+                                                                        <i class="fas fa-chevron-down"></i>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="collapse" id="qualifications-{{ forloop.counter }}">
+                                                                    <div class="card card-body border-0 bg-light small p-2" style="max-height: 300px; overflow-y: auto;">
+                                                                        <ul class="list-unstyled mb-0">
+                                                                            {% for qual in job.job_highlights.Qualifications %}
+                                                                                <li class="mb-2 p-2 border-bottom">
+                                                                                    <i class="fas fa-chevron-right me-1 text-muted" style="font-size: 0.7rem;"></i>
+                                                                                    {{ qual }}
+                                                                                </li>
+                                                                            {% endfor %}
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- Preview (first 2 items) -->
+                                                                <div class="preview-items">
+                                                                    <ul class="list-unstyled small mb-0">
+                                                                        {% for qual in job.job_highlights.Qualifications|slice:":2" %}
+                                                                            <li class="mb-1">
+                                                                                <i class="fas fa-chevron-right me-1 text-muted" style="font-size: 0.7rem;"></i>
+                                                                                {{ qual|truncatewords:12 }}
+                                                                            </li>
+                                                                        {% endfor %}
+                                                                        {% if job.job_highlights.Qualifications|length > 2 %}
+                                                                            <li class="text-muted small">
+                                                                                <i class="fas fa-plus me-1"></i>{{ job.job_highlights.Qualifications|length|add:"-2" }} more...
+                                                                            </li>
+                                                                        {% endif %}
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    {% endif %}
+                                                    {% if job.job_highlights.Responsibilities %}
+                                                        <div class="col-lg-4 col-md-6 mb-3">
+                                                            <div class="highlight-section">
+                                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                                    <h6 class="text-info mb-0">
+                                                                        <i class="fas fa-tasks me-1"></i>Responsibilities
+                                                                    </h6>
+                                                                    <button class="btn btn-sm btn-outline-info" type="button" data-bs-toggle="collapse" data-bs-target="#responsibilities-{{ forloop.counter }}" aria-expanded="false">
+                                                                        <i class="fas fa-chevron-down"></i>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="collapse" id="responsibilities-{{ forloop.counter }}">
+                                                                    <div class="card card-body border-0 bg-light small p-2" style="max-height: 300px; overflow-y: auto;">
+                                                                        <ul class="list-unstyled mb-0">
+                                                                            {% for resp in job.job_highlights.Responsibilities %}
+                                                                                <li class="mb-2 p-2 border-bottom">
+                                                                                    <i class="fas fa-chevron-right me-1 text-muted" style="font-size: 0.7rem;"></i>
+                                                                                    {{ resp }}
+                                                                                </li>
+                                                                            {% endfor %}
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- Preview (first 2 items) -->
+                                                                <div class="preview-items">
+                                                                    <ul class="list-unstyled small mb-0">
+                                                                        {% for resp in job.job_highlights.Responsibilities|slice:":2" %}
+                                                                            <li class="mb-1">
+                                                                                <i class="fas fa-chevron-right me-1 text-muted" style="font-size: 0.7rem;"></i>
+                                                                                {{ resp|truncatewords:12 }}
+                                                                            </li>
+                                                                        {% endfor %}
+                                                                        {% if job.job_highlights.Responsibilities|length > 2 %}
+                                                                            <li class="text-muted small">
+                                                                                <i class="fas fa-plus me-1"></i>{{ job.job_highlights.Responsibilities|length|add:"-2" }} more...
+                                                                            </li>
+                                                                        {% endif %}
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    {% endif %}
+                                                    {% if job.job_highlights.Benefits %}
+                                                        <div class="col-lg-4 col-md-6 mb-3">
+                                                            <div class="highlight-section">
+                                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                                    <h6 class="text-success mb-0">
+                                                                        <i class="fas fa-gift me-1"></i>Benefits
+                                                                    </h6>
+                                                                    <button class="btn btn-sm btn-outline-success" type="button" data-bs-toggle="collapse" data-bs-target="#benefits-{{ forloop.counter }}" aria-expanded="false">
+                                                                        <i class="fas fa-chevron-down"></i>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="collapse" id="benefits-{{ forloop.counter }}">
+                                                                    <div class="card card-body border-0 bg-light small p-2" style="max-height: 300px; overflow-y: auto;">
+                                                                        <ul class="list-unstyled mb-0">
+                                                                            {% for benefit in job.job_highlights.Benefits %}
+                                                                                <li class="mb-2 p-2 border-bottom">
+                                                                                    <i class="fas fa-chevron-right me-1 text-muted" style="font-size: 0.7rem;"></i>
+                                                                                    {{ benefit }}
+                                                                                </li>
+                                                                            {% endfor %}
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- Preview (first 2 items) -->
+                                                                <div class="preview-items">
+                                                                    <ul class="list-unstyled small mb-0">
+                                                                        {% for benefit in job.job_highlights.Benefits|slice:":2" %}
+                                                                            <li class="mb-1">
+                                                                                <i class="fas fa-chevron-right me-1 text-muted" style="font-size: 0.7rem;"></i>
+                                                                                {{ benefit|truncatewords:12 }}
+                                                                            </li>
+                                                                        {% endfor %}
+                                                                        {% if job.job_highlights.Benefits|length > 2 %}
+                                                                            <li class="text-muted small">
+                                                                                <i class="fas fa-plus me-1"></i>{{ job.job_highlights.Benefits|length|add:"-2" }} more...
+                                                                            </li>
+                                                                        {% endif %}
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+
+                                    <!-- Job Actions -->
+                                    <div class="col-lg-4 text-lg-end">
+                                        <div class="d-flex flex-column gap-2 h-100 justify-content-between">
+                                            <div>
+                                                <!-- Employer Logo -->
+                                                {% if job.employer_logo %}
+                                                    <div class="mb-3 text-center">
+                                                        <img src="{{ job.employer_logo }}" alt="{{ job.employer_name }}"
+                                                             class="img-fluid rounded" style="max-height: 60px; max-width: 120px;">
+                                                    </div>
+                                                {% endif %}
+
+                                                <!-- Work Type Badges -->
+                                                <div class="mb-2">
+                                                    {% if job.job_is_remote %}
+                                                        <span class="badge bg-success-subtle text-success px-3 py-2 mb-1 d-block">
+                                                            <i class="fas fa-home me-1"></i>Remote Work
+                                                        </span>
+                                                    {% else %}
+                                                        <span class="badge bg-info-subtle text-info px-3 py-2 mb-1 d-block">
+                                                            <i class="fas fa-building me-1"></i>On-site
+                                                        </span>
+                                                    {% endif %}
+
+                                                    {% if job.job_employment_type %}
+                                                        <span class="badge bg-primary-subtle text-primary px-3 py-2 mb-1 d-block">
+                                                            <i class="fas fa-briefcase me-1"></i>{{ job.job_employment_type }}
+                                                        </span>
+                                                    {% endif %}
+                                                </div>
+
+                                                <!-- Publisher Info -->
+                                                {% if job.job_publisher %}
+                                                    <div class="mb-2">
+                                                        <small class="text-muted">
+                                                            <i class="fas fa-external-link-alt me-1"></i>
+                                                            via {{ job.job_publisher }}
+                                                        </small>
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+
+                                            <!-- Action Buttons -->
+                                            <div class="d-grid gap-2">
+                                                {% if job.job_apply_link %}
+                                                    <a href="{{ job.job_apply_link }}" target="_blank" class="btn btn-primary" style="border-radius: 50px;">
+                                                        <i class="fas fa-external-link-alt me-1"></i>Apply Now
+                                                    </a>
+                                                {% endif %}
+
+                                                {% if job.job_google_link %}
+                                                    <a href="{{ job.job_google_link }}" target="_blank" class="btn btn-outline-secondary btn-sm" style="border-radius: 50px;">
+                                                        <i class="fab fa-google me-1"></i>View on Google
+                                                    </a>
+                                                {% endif %}
+
+                                                <!-- Multiple Apply Options -->
+                                                {% if job.apply_options and job.apply_options|length > 1 %}
+                                                    <div class="dropdown">
+                                                        <button class="btn btn-outline-info btn-sm dropdown-toggle" type="button" style="border-radius: 50px;" data-bs-toggle="dropdown">
+                                                            <i class="fas fa-list me-1"></i>More Apply Options ({{ job.apply_options|length }})
+                                                        </button>
+                                                        <ul class="dropdown-menu">
+                                                            {% for option in job.apply_options|slice:":5" %}
+                                                                <li>
+                                                                    <a class="dropdown-item" href="{{ option.apply_link }}" target="_blank">
+                                                                        <i class="fas fa-external-link-alt me-2"></i>{{ option.publisher }}
+                                                                        {% if option.is_direct %}
+                                                                            <span class="badge bg-success-subtle text-success ms-1">Direct</span>
+                                                                        {% endif %}
+                                                                    </a>
+                                                                </li>
+                                                            {% endfor %}
+                                                        </ul>
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+            {% else %}
+                <!-- No Jobs Found -->
+                <div class="col-12">
+                    <div class="card border-0 shadow-sm text-center" style="border-radius: 15px;">
+                        <div class="card-body p-5">
+                            <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                            <h4 class="text-muted mb-3">No Jobs Found</h4>
+                            <p class="text-muted mb-4">We couldn't find any jobs matching your resume at the moment. Try refreshing or updating your resume.</p>
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                                <a href="" class="btn btn-primary me-md-2" style="border-radius: 50px;">
+                                    <i class="fas fa-sync-alt me-2"></i>Refresh Search
+                                </a>
+                                <a href="" class="btn btn-outline-secondary" style="border-radius: 50px;">
+                                    <i class="fas fa-edit me-2"></i>Update Resume
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    {% else %}
+        <!-- Not Authenticated -->
+        <div class="row justify-content-center">
+            <div class="col-lg-6 text-center">
+                <div class="card border-0 shadow-sm" style="border-radius: 15px;">
+                    <div class="card-body p-5">
+                        <i class="fas fa-lock fa-4x text-warning mb-4"></i>
+                        <h4 class="text-warning mb-3">Authentication Required</h4>
+                        <p class="text-muted mb-4">Please log in to view job matches.</p>
+                        <a href="{% url 'login' %}" class="btn btn-warning" style="border-radius: 50px;">
+                            <i class="fas fa-sign-in-alt me-2"></i>Login
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+<style>
+    .card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
+    }
+
+    .badge {
+        transition: all 0.3s ease;
+    }
+
+    .badge:hover {
+        transform: scale(1.05);
+    }
+
+    .btn {
+        transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+        transform: translateY(-1px);
+    }
+
+    .description-text {
+        font-size: 0.9rem;
+        white-space: pre-line;
+    }
+
+    .description-text::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .description-text::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 3px;
+    }
+
+    .description-text::-webkit-scrollbar-thumb {
+        background: #007bff;
+        border-radius: 3px;
+    }
+
+    .description-text::-webkit-scrollbar-thumb:hover {
+        background: #0056b3;
+    }
+
+    .dropdown-menu {
+        border: none;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+
+    .dropdown-item {
+        transition: all 0.3s ease;
+    }
+
+    .dropdown-item:hover {
+        background-color: #f8f9fa;
+        transform: translateX(5px);
+    }
+
+    .img-fluid {
+        object-fit: contain;
+    }
+
+    .highlight-section {
+        position: relative;
+        padding: 0.75rem;
+        background-color: rgba(248, 249, 250, 0.5);
+        border-radius: 8px;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .highlight-section:hover {
+        background-color: rgba(248, 249, 250, 0.8);
+        border-color: rgba(0, 0, 0, 0.2);
+        transform: translateY(-2px);
+    }
+
+    .highlight-section .btn {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.75rem;
+        transition: all 0.3s ease;
+    }
+
+    .highlight-section .btn:hover {
+        transform: rotate(180deg);
+    }
+
+    .highlight-section .collapse .card-body {
+        border-radius: 6px;
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .highlight-section .collapse .card-body::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    .highlight-section .collapse .card-body::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 2px;
+    }
+
+    .highlight-section .collapse .card-body::-webkit-scrollbar-thumb {
+        background: #007bff;
+        border-radius: 2px;
+    }
+
+    .highlight-section .collapse .card-body::-webkit-scrollbar-thumb:hover {
+        background: #0056b3;
+    }
+
+    .highlight-section .preview-items {
+        transition: opacity 0.3s ease;
+    }
+
+    .highlight-section .collapse.show + .preview-items {
+        display: none;
+    }
+
+    .highlight-section .border-bottom:last-child {
+        border-bottom: none !important;
+    }
+
+    /* Responsive adjustments for highlights */
+    @media (max-width: 992px) {
+        .highlight-section {
+            margin-bottom: 1rem;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .highlight-section .btn {
+            padding: 0.125rem 0.25rem;
+            font-size: 0.7rem;
+        }
+
+        .highlight-section {
+            padding: 0.5rem;
+        }
+    }
+</style>
+{% endblock %}

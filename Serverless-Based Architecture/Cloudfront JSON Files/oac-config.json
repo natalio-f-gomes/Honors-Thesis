@@ -1,0 +1,7 @@
+{
+  "Name": "resume-analyzer-oac",
+  "Description": "OAC for resume-analyzer.net S3 bucket",
+  "SigningProtocol": "sigv4",
+  "SigningBehavior": "always",
+  "OriginAccessControlOriginType": "s3"
+}

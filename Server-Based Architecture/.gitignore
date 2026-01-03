@@ -1,0 +1,22 @@
+.env
+.idea
+db.sqlite3
+reference.txt
+virt
+media
+/ResumeExamples
+/Evaluator/APIs
+/Docs
+ATP CREDENTIALS.rtf
+credentials.txt
+atpkeypair.pem
+urls.txt
+README.md
+temp_repo_analysis
+JOB_MARKET_STATS
+JOBMARKET_STATS
+readme_generator.py
+reload.txt
+Testing/
+security_group.png
+TestFLASKAPI

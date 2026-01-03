@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Contact Us - Resume Analyzer</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/contact.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand me-2 fw-bold gradient-text fs-3" href="../index.html">
+                <i class="fas fa-file-alt me-2"></i>Resume Analyzer
+            </a>
+            <button class="navbar-toggler shadow-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarButtonsExample">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarButtonsExample">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
+                <div class="d-flex align-items-center">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link fw-semibold position-relative" href="../index.html">
+                                <i class="fas fa-home me-2"></i>Home
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link fw-semibold position-relative" href="about.html">
+                                <i class="fas fa-info-circle me-2"></i>About
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link fw-semibold position-relative" href="contact.html">
+                                <i class="fas fa-envelope me-2"></i>Contact
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link fw-semibold position-relative" href="feedback.html">
+                                <i class="fas fa-comment-dots me-2"></i>Feedback
+                            </a>
+                        </li>
+                        <li class="nav-item" id="accountNavItem" style="display: none;">
+                            <a class="nav-link fw-semibold position-relative" href="account.html">
+                                <i class="fas fa-user-circle me-2"></i>My Account
+                            </a>
+                        </li>
+                    </ul>
+                    <button id="loginBtn" class="btn btn-success px-4 me-2 ms-3">
+                        <i class="fas fa-sign-in-alt me-2"></i>Login
+                    </button>
+                    <button id="logoutBtn" class="btn btn-danger px-4 me-2 ms-3" style="display: none;">
+                        <i class="fas fa-sign-out-alt me-2"></i>Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="animate-fade-in">
+        <div class="container mt-5">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 col-md-10">
+                    <div class="card shadow-lg" style="border-radius: 15px;">
+                        <div class="card-header text-center py-4" style="background: linear-gradient(135deg, #28a745, #20c997); border-radius: 15px 15px 0 0;">
+                            <h2 class="text-white mb-0">
+                                <i class="fas fa-envelope me-2"></i>Contact Us
+                            </h2>
+                            <p class="text-white-50 mb-0">We'd love to hear from you!</p>
+                        </div>
+
+                        <div class="card-body p-5">
+                            <!-- Messages Container -->
+                            <div id="messagesContainer"></div>
+
+                            <form id="contactForm" class="contact-form">
+                                <!-- Name Field -->
+                                <div class="mb-4">
+                                    <label for="name" class="form-label fw-semibold">
+                                        <i class="fas fa-user text-primary me-2"></i>Your Name
+                                    </label>
+                                    <input type="text"
+                                           class="form-control form-control-lg"
+                                           id="name"
+                                           name="name"
+                                           placeholder="Enter your full name"
+                                           style="border-radius: 10px;"
+                                           required>
+                                </div>
+
+                                <!-- Email Field -->
+                                <div class="mb-4">
+                                    <label for="email" class="form-label fw-semibold">
+                                        <i class="fas fa-envelope text-info me-2"></i>Email Address
+                                    </label>
+                                    <input type="email"
+                                           class="form-control form-control-lg"
+                                           id="email"
+                                           name="email"
+                                           placeholder="Enter your email address"
+                                           style="border-radius: 10px;"
+                                           required>
+                                </div>
+
+                                <!-- Subject Field -->
+                                <div class="mb-4">
+                                    <label for="subject" class="form-label fw-semibold">
+                                        <i class="fas fa-tag text-warning me-2"></i>Subject
+                                    </label>
+                                    <input type="text"
+                                           class="form-control form-control-lg"
+                                           id="subject"
+                                           name="subject"
+                                           placeholder="What is this message about?"
+                                           style="border-radius: 10px;"
+                                           required>
+                                </div>
+
+                                <!-- Category Field -->
+                                <div class="mb-4">
+                                    <label for="category" class="form-label fw-semibold">
+                                        <i class="fas fa-folder text-secondary me-2"></i>Category
+                                    </label>
+                                    <select class="form-select form-select-lg"
+                                            id="category"
+                                            name="category"
+                                            style="border-radius: 10px;">
+                                        <option value="">Select a category (optional)</option>
+                                        <option value="general">General Inquiry</option>
+                                        <option value="support">Technical Support</option>
+                                        <option value="feedback">Feedback</option>
+                                        <option value="bug">Bug Report</option>
+                                        <option value="feature">Feature Request</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+
+                                <!-- Message Fild -->
+                                <div class="mb-4">
+                                    <label for="message" class="form-label fw-semibold">
+                                        <i class="fas fa-comment text-success me-2"></i>Your Message
+                                    </label>
+                                    <textarea class="form-control"
+                                              id="message"
+                                              name="message"
+                                              rows="6"
+                                              placeholder="Tell us what's on your mind..."
+                                              style="border-radius: 10px;"
+                                              required></textarea>
+                                    <div class="form-text">
+                                        <small class="text-muted">Please provide as much detail as possible.</small>
+                                    </div>
+                                </div>
+
+                                <!-- Submit Button -->
+                                <div class="text-center">
+                                    <button type="submit"
+                                            class="btn btn-success btn-lg px-5"
+                                            style="border-radius: 50px; background: linear-gradient(135deg, #28a745, #20c997); border: none;"
+                                            id="submitBtn">
+                                        <i class="fas fa-paper-plane me-2"></i>Send Message
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="card-footer text-center py-3" style="background-color: #f8f9fa; border-radius: 0 0 15px 15px;">
+                            <small class="text-muted">
+                                <i class="fas fa-shield-alt me-1"></i>Your information is secure and will only be used to respond to your message.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-5 py-5">
+        <div class="container">
+            <div class="row mt-5">
+                <div class="col-12">
+                    <div class="footer-bottom text-center py-4" style="border-top: 2px solid transparent; background: linear-gradient(white, white) padding-box, linear-gradient(135deg, #667eea, #764ba2) border-box; border-radius: 20px;">
+                        <div class="d-flex align-items-center justify-content-center flex-wrap">
+                            <div class="icon-circle me-3 mb-2 mb-sm-0" style="width: 40px; height: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                                <i class="fas fa-file-alt text-white"></i>
+                            </div>
+                            <span class="gradient-text fw-bold fs-5 me-3">Resume Analyzer</span>
+                            <span class="text-muted">© <span id="currentYear">2024</span> All rights reserved</span>
+                        </div>
+                        <a href="terms.html">Terms and Conditions</a>
+                        <div class="social-links mt-3">
+                            <a href="#" class="btn btn-outline-primary btn-sm rounded-circle me-2" style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center;">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" class="btn btn-outline-primary btn-sm rounded-circle me-2" style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center;">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                            <a href="#" class="btn btn-outline-primary btn-sm rounded-circle" style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center;">
+                                <i class="fab fa-github"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/auth-cognito-hosted.js"></script>
+    <script src="../js/main.js"></script>
+    <script src="../js/contact.js"></script>
+</body>
+</html>

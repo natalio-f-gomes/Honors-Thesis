@@ -1,0 +1,522 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Upload Resume - Resume Analyzer</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="css/upload.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand me-2 fw-bold gradient-text fs-3" href="../index.html">
+                <i class="fas fa-file-alt me-2"></i>Resume Analyzer
+            </a>
+            <button class="navbar-toggler shadow-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarButtonsExample">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarButtonsExample">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
+                <div class="d-flex align-items-center">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link fw-semibold position-relative" href="../index.html">
+                                <i class="fas fa-home me-2"></i>Home
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link fw-semibold position-relative" href="about.html">
+                                <i class="fas fa-info-circle me-2"></i>About
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link fw-semibold position-relative" href="contact.html">
+                                <i class="fas fa-envelope me-2"></i>Contact
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link fw-semibold position-relative" href="feedback.html">
+                                <i class="fas fa-comment-dots me-2"></i>Feedback
+                            </a>
+                        </li>
+                        <li class="nav-item" id="accountNavItem" style="display: none;">
+                            <a class="nav-link fw-semibold position-relative" href="account.html">
+                                <i class="fas fa-user-circle me-2"></i>My Account
+                            </a>
+                        </li>
+                    </ul>
+                    <button id="loginBtn" class="btn btn-success px-4 me-2 ms-3">
+                        <i class="fas fa-sign-in-alt me-2"></i>Login
+                    </button>
+                    <button id="logoutBtn" class="btn btn-danger px-4 me-2 ms-3" style="display: none;">
+                        <i class="fas fa-sign-out-alt me-2"></i>Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="animate-fade-in">
+        <div class="container py-5">
+            <div class="row justify-content-center">
+                <!-- Page Header -->
+                <div class="col-12 mb-5">
+                    <div class="page-header text-center animate-fade-in">
+                        <div class="profile-avatar mx-auto mb-3" style="width: 80px; height: 80px; background: linear-gradient(135deg, #007bff 0%, #0056b3 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 25px rgba(0, 123, 255, 0.3);">
+                            <i class="fas fa-cloud-upload-alt fa-2x text-white"></i>
+                        </div>
+                        <h2 class="display-5 fw-bold mb-1 gradient-text">Upload Your Resume</h2>
+                        <p class="text-muted">Analyze your resume and get personalized feedback</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-8 col-xl-6">
+                    <!-- Messages -->
+                    <div class="container-lg text-center mb-4" id="messagesContainer"></div>
+
+                    <!-- Upload Card -->
+                    <div class="card border-0 shadow-lg animate-fade-in" style="border-radius: 25px; overflow: hidden;">
+                        <!-- Card Header -->
+                        <div class="card-header text-white py-4" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                            <div class="d-flex align-items-center">
+                                <div class="icon-circle me-3" style="width: 50px; height: 50px; background: rgba(255, 255, 255, 0.2);">
+                                    <i class="fas fa-file-alt text-white"></i>
+                                </div>
+                                <div>
+                                    <h5 class="mb-1 fw-bold">Resume Analysis</h5>
+                                    <p class="mb-0 opacity-75">Upload your resume for insights</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card Body -->
+                        <div class="card-body p-5" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);">
+                            <!-- Upload Form -->
+                            <form id="uploadForm" class="upload-form">
+                                <!-- File Upload Section -->
+                                <div class="upload-section mb-4">
+                                    <div class="file-upload-area border-0 p-5 text-center" style="border: 3px dashed #e9ecef !important; border-radius: 20px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05)); transition: all 0.3s ease;" id="fileUploadArea">
+                                        <div class="upload-icon mb-4">
+                                            <div class="icon-circle mx-auto" style="width: 80px; height: 80px; background: linear-gradient(135deg, #28a745, #20c997);">
+                                                <i class="fas fa-cloud-upload-alt fa-2x text-white" id="uploadIcon"></i>
+                                            </div>
+                                        </div>
+
+                                        <div class="upload-content">
+                                            <h5 class="fw-bold mb-3" id="uploadTitle">Drag & Drop Your Resume</h5>
+                                            <p class="text-muted mb-4" id="uploadDescription">
+                                                or <span class="text-primary fw-semibold" style="cursor: pointer;" onclick="document.getElementById('fileInput').click()">browse files</span>
+                                            </p>
+
+                                            <!-- Hidden File Input -->
+                                            <input type="file" id="fileInput" name="resume_file" accept=".pdf" style="display: none;" required>
+
+                                            <div class="file-info mt-3" id="fileInfo" style="display: none;">
+                                                <div class="selected-file p-3 rounded-3" style="background: linear-gradient(135deg, rgba(40, 167, 69, 0.1), rgba(32, 201, 151, 0.1)); border: 2px solid #28a745;">
+                                                    <div class="d-flex align-items-center justify-content-center">
+                                                        <i class="fas fa-file-pdf text-danger fa-2x me-3" id="fileIcon"></i>
+                                                        <div class="text-start">
+                                                            <h6 class="mb-1 fw-bold" id="fileName">Selected File</h6>
+                                                            <small class="text-muted" id="fileSize">File Size</small>
+                                                            <small class="text-info d-block" id="fileType">File Type</small>
+                                                        </div>
+                                                        <button type="button" class="btn btn-outline-danger btn-sm ms-auto" onclick="window.removeFile()">
+                                                            <i class="fas fa-times"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="upload-requirements mt-3">
+                                        <small class="text-muted">
+                                            <i class="fas fa-info-circle me-1"></i>
+                                            Supported format: PDF files only (max 10MB)
+                                        </small>
+                                        <div class="mt-2">
+                                            <small class="text-muted d-block">
+                                                <i class="fas fa-file-pdf me-1 text-danger"></i>PDF documents only
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Additional Form Fields -->
+                                <div class="form-fields">
+                                    <!-- Career Field -->
+                                    <div class="form-section mb-4">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <div class="icon-circle me-3" style="width: 45px; height: 45px; background: linear-gradient(135deg, #6f42c1, #8b5cf6);">
+                                                <i class="fas fa-briefcase text-white"></i>
+                                            </div>
+                                            <label class="form-label fw-semibold mb-0" for="career_field">Career Field</label>
+                                        </div>
+                                        <select class="form-select" name="career_field" id="career_field" required style="border: 2px solid #e9ecef; border-radius: 15px; padding: 0.75rem 1rem;">
+                                                <option value="">Select your career field</option>
+                                                <option value="3d_modeling">3D Modeling</option>
+                                                <option value="accounting">Accounting</option>
+                                                <option value="account_executive">Account Executive</option>
+                                                <option value="actuarial_science">Actuarial Science</option>
+                                                <option value="aerospace_engineering">Aerospace Engineering</option>
+                                                <option value="agriculture">Agriculture</option>
+                                                <option value="agricultural_engineering">Agricultural Engineering</option>
+                                                <option value="ai_ml">AI/Machine Learning</option>
+                                                <option value="android_development">Android Development</option>
+                                                <option value="animation">Animation</option>
+                                                <option value="architecture">Architecture</option>
+                                                <option value="art_direction">Art Direction</option>
+                                                <option value="artificial_intelligence">Artificial Intelligence</option>
+                                                <option value="athletic_training">Athletic Training</option>
+                                                <option value="audio_engineering">Audio Engineering</option>
+                                                <option value="auditing">Auditing</option>
+                                                <option value="backend_development">Backend Development</option>
+                                                <option value="big_data">Big Data</option>
+                                                <option value="biomedical_engineering">Biomedical Engineering</option>
+                                                <option value="biology">Biology</option>
+                                                <option value="biotechnology">Biotechnology</option>
+                                                <option value="brand_management">Brand Management</option>
+                                                <option value="broadcasting">Broadcasting</option>
+                                                <option value="business_analysis">Business Analysis</option>
+                                                <option value="business_development">Business Development</option>
+                                                <option value="business_intelligence">Business Intelligence</option>
+                                                <option value="buying">Buying</option>
+                                                <option value="call_center_management">Call Center Management</option>
+                                                <option value="change_management">Change Management</option>
+                                                <option value="chemical_engineering">Chemical Engineering</option>
+                                                <option value="chemistry">Chemistry</option>
+                                                <option value="civil_engineering">Civil Engineering</option>
+                                                <option value="clinical_research">Clinical Research</option>
+                                                <option value="cloud_architecture">Cloud Architecture</option>
+                                                <option value="cloud_computing">Cloud Computing</option>
+                                                <option value="commercial_real_estate">Commercial Real Estate</option>
+                                                <option value="compensation_benefits">Compensation & Benefits</option>
+                                                <option value="compliance">Compliance</option>
+                                                <option value="conservation">Conservation</option>
+                                                <option value="construction_management">Construction Management</option>
+                                                <option value="consulting">Consulting</option>
+                                                <option value="content_marketing">Content Marketing</option>
+                                                <option value="content_writing">Content Writing</option>
+                                                <option value="contract_management">Contract Management</option>
+                                                <option value="copywriting">Copywriting</option>
+                                                <option value="corporate_communications">Corporate Communications</option>
+                                                <option value="corporate_finance">Corporate Finance</option>
+                                                <option value="corporate_law">Corporate Law</option>
+                                                <option value="corporate_training">Corporate Training</option>
+                                                <option value="creative_direction">Creative Direction</option>
+                                                <option value="creative_writing">Creative Writing</option>
+                                                <option value="culinary_arts">Culinary Arts</option>
+                                                <option value="curriculum_development">Curriculum Development</option>
+                                                <option value="customer_service">Customer Service</option>
+                                                <option value="customer_success">Customer Success</option>
+                                                <option value="cyber_defense">Cyber Defense</option>
+                                                <option value="cybersecurity">Cybersecurity</option>
+                                                <option value="data_analysis">Data Analysis</option>
+                                                <option value="data_analytics">Data Analytics</option>
+                                                <option value="data_engineering">Data Engineering</option>
+                                                <option value="data_mining">Data Mining</option>
+                                                <option value="data_science">Data Science</option>
+                                                <option value="database_administration">Database Administration</option>
+                                                <option value="dentistry">Dentistry</option>
+                                                <option value="devops_engineering">DevOps Engineering</option>
+                                                <option value="digital_forensics">Digital Forensics</option>
+                                                <option value="digital_marketing">Digital Marketing</option>
+                                                <option value="editing">Editing</option>
+                                                <option value="educational_administration">Educational Administration</option>
+                                                <option value="educational_technology">Educational Technology</option>
+                                                <option value="electrical_engineering">Electrical Engineering</option>
+                                                <option value="email_marketing">Email Marketing</option>
+                                                <option value="employee_relations">Employee Relations</option>
+                                                <option value="entrepreneurship">Entrepreneurship</option>
+                                                <option value="environmental_engineering">Environmental Engineering</option>
+                                                <option value="environmental_science">Environmental Science</option>
+                                                <option value="ethical_hacking">Ethical Hacking</option>
+                                                <option value="event_planning">Event Planning</option>
+                                                <option value="film_television">Film & Television</option>
+                                                <option value="financial_analysis">Financial Analysis</option>
+                                                <option value="financial_planning">Financial Planning</option>
+                                                <option value="fine_arts">Fine Arts</option>
+                                                <option value="fitness_training">Fitness Training</option>
+                                                <option value="food_science">Food Science</option>
+                                                <option value="frontend_development">Frontend Development</option>
+                                                <option value="full_stack_development">Full Stack Development</option>
+                                                <option value="game_design">Game Design</option>
+                                                <option value="game_development">Game Development</option>
+                                                <option value="geology">Geology</option>
+                                                <option value="government_relations">Government Relations</option>
+                                                <option value="graphic_design">Graphic Design</option>
+                                                <option value="healthcare_administration">Healthcare Administration</option>
+                                                <option value="healthcare_it">Healthcare IT</option>
+                                                <option value="help_desk_support">Help Desk Support</option>
+                                                <option value="higher_education">Higher Education</option>
+                                                <option value="horticulture">Horticulture</option>
+                                                <option value="hotel_management">Hotel Management</option>
+                                                <option value="hr_analytics">HR Analytics</option>
+                                                <option value="hr_business_partner">HR Business Partner</option>
+                                                <option value="human_resources">Human Resources</option>
+                                                <option value="industrial_design">Industrial Design</option>
+                                                <option value="industrial_engineering">Industrial Engineering</option>
+                                                <option value="information_security">Information Security</option>
+                                                <option value="instructional_design">Instructional Design</option>
+                                                <option value="insurance">Insurance</option>
+                                                <option value="intellectual_property">Intellectual Property</option>
+                                                <option value="interior_design">Interior Design</option>
+                                                <option value="international_relations">International Relations</option>
+                                                <option value="interpreting_translation">Interpreting & Translation</option>
+                                                <option value="inventory_management">Inventory Management</option>
+                                                <option value="investment_banking">Investment Banking</option>
+                                                <option value="ios_development">iOS Development</option>
+                                                <option value="it_management">IT Management</option>
+                                                <option value="it_support">IT Support</option>
+                                                <option value="journalism">Journalism</option>
+                                                <option value="law">Law</option>
+                                                <option value="legal_counsel">Legal Counsel</option>
+                                                <option value="life_sciences">Life Sciences</option>
+                                                <option value="litigation">Litigation</option>
+                                                <option value="logistics">Logistics</option>
+                                                <option value="machine_learning">Machine Learning</option>
+                                                <option value="management_accounting">Management Accounting</option>
+                                                <option value="management_consulting">Management Consulting</option>
+                                                <option value="manufacturing_engineering">Manufacturing Engineering</option>
+                                                <option value="market_research">Market Research</option>
+                                                <option value="marketing_analytics">Marketing Analytics</option>
+                                                <option value="materials_science">Materials Science</option>
+                                                <option value="mechanical_engineering">Mechanical Engineering</option>
+                                                <option value="medical_research">Medical Research</option>
+                                                <option value="medical_technology">Medical Technology</option>
+                                                <option value="medicine">Medicine</option>
+                                                <option value="merchandising">Merchandising</option>
+                                                <option value="mobile_development">Mobile Development</option>
+                                                <option value="motion_graphics">Motion Graphics</option>
+                                                <option value="multimedia_design">Multimedia Design</option>
+                                                <option value="music">Music</option>
+                                                <option value="network_engineering">Network Engineering</option>
+                                                <option value="network_security">Network Security</option>
+                                                <option value="nonprofit_management">Nonprofit Management</option>
+                                                <option value="nursing">Nursing</option>
+                                                <option value="occupational_therapy">Occupational Therapy</option>
+                                                <option value="operations_management">Operations Management</option>
+                                                <option value="organizational_development">Organizational Development</option>
+                                                <option value="paralegal">Paralegal</option>
+                                                <option value="partnership_management">Partnership Management</option>
+                                                <option value="penetration_testing">Penetration Testing</option>
+                                                <option value="performing_arts">Performing Arts</option>
+                                                <option value="pharmaceutical_research">Pharmaceutical Research</option>
+                                                <option value="pharmacy">Pharmacy</option>
+                                                <option value="photography">Photography</option>
+                                                <option value="physical_education">Physical Education</option>
+                                                <option value="physical_therapy">Physical Therapy</option>
+                                                <option value="physics">Physics</option>
+                                                <option value="policy_analysis">Policy Analysis</option>
+                                                <option value="portfolio_management">Portfolio Management</option>
+                                                <option value="private_equity">Private Equity</option>
+                                                <option value="procurement">Procurement</option>
+                                                <option value="product_design">Product Design</option>
+                                                <option value="product_management">Product Management</option>
+                                                <option value="product_marketing">Product Marketing</option>
+                                                <option value="program_management">Program Management</option>
+                                                <option value="project_management">Project Management</option>
+                                                <option value="property_management">Property Management</option>
+                                                <option value="public_administration">Public Administration</option>
+                                                <option value="public_health">Public Health</option>
+                                                <option value="public_relations">Public Relations</option>
+                                                <option value="publishing">Publishing</option>
+                                                <option value="quality_assurance">Quality Assurance</option>
+                                                <option value="quantitative_analysis">Quantitative Analysis</option>
+                                                <option value="real_estate">Real Estate</option>
+                                                <option value="real_estate_development">Real Estate Development</option>
+                                                <option value="recruiting">Recruiting</option>
+                                                <option value="regulatory_affairs">Regulatory Affairs</option>
+                                                <option value="renewable_energy">Renewable Energy</option>
+                                                <option value="research_development">Research & Development</option>
+                                                <option value="residential_real_estate">Residential Real Estate</option>
+                                                <option value="restaurant_management">Restaurant Management</option>
+                                                <option value="retail_management">Retail Management</option>
+                                                <option value="risk_management">Risk Management</option>
+                                                <option value="robotics_engineering">Robotics Engineering</option>
+                                                <option value="sales_engineering">Sales Engineering</option>
+                                                <option value="sales_management">Sales Management</option>
+                                                <option value="security_analysis">Security Analysis</option>
+                                                <option value="security_engineering">Security Engineering</option>
+                                                <option value="seo_sem">SEO/SEM</option>
+                                                <option value="skilled_trades">Skilled Trades</option>
+                                                <option value="social_media_marketing">Social Media Marketing</option>
+                                                <option value="social_work">Social Work</option>
+                                                <option value="software_engineering">Software Engineering</option>
+                                                <option value="sports_management">Sports Management</option>
+                                                <option value="statistical_analysis">Statistical Analysis</option>
+                                                <option value="store_management">Store Management</option>
+                                                <option value="strategic_planning">Strategic Planning</option>
+                                                <option value="structural_engineering">Structural Engineering</option>
+                                                <option value="student_affairs">Student Affairs</option>
+                                                <option value="supply_chain_management">Supply Chain Management</option>
+                                                <option value="sustainability">Sustainability</option>
+                                                <option value="systems_administration">Systems Administration</option>
+                                                <option value="talent_acquisition">Talent Acquisition</option>
+                                                <option value="tax_accounting">Tax Accounting</option>
+                                                <option value="teaching">Teaching</option>
+                                                <option value="technical_support">Technical Support</option>
+                                                <option value="technical_writing">Technical Writing</option>
+                                                <option value="theater">Theater</option>
+                                                <option value="tourism_management">Tourism Management</option>
+                                                <option value="training_development">Training & Development</option>
+                                                <option value="transportation_management">Transportation Management</option>
+                                                <option value="travel_consulting">Travel Consulting</option>
+                                                <option value="treasury_management">Treasury Management</option>
+                                                <option value="tutoring">Tutoring</option>
+                                                <option value="ui_ux_design">UI/UX Design</option>
+                                                <option value="urban_planning">Urban Planning</option>
+                                                <option value="user_experience_design">User Experience Design</option>
+                                                <option value="user_interface_design">User Interface Design</option>
+                                                <option value="venture_capital">Venture Capital</option>
+                                                <option value="veterinary_medicine">Veterinary Medicine</option>
+                                                <option value="video_production">Video Production</option>
+                                                <option value="visual_design">Visual Design</option>
+                                                <option value="warehouse_management">Warehouse Management</option>
+                                                <option value="wealth_management">Wealth Management</option>
+                                                <option value="web_design">Web Design</option>
+                                                <option value="web_development">Web Development</option>
+                                            </select>
+                                        <small class="form-text text-muted mt-2">
+                                            <i class="fas fa-lightbulb me-1"></i>This helps us provide more targeted feedback
+                                        </small>
+                                    </div>
+
+                                    <!-- Experience Level -->
+                                    <div class="form-section mb-4">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <div class="icon-circle me-3" style="width: 45px; height: 45px; background: linear-gradient(135deg, #fd7e14, #ff6b35);">
+                                                <i class="fas fa-chart-line text-white"></i>
+                                            </div>
+                                            <label class="form-label fw-semibold mb-0" for="experience_level">Experience Level</label>
+                                        </div>
+                                        <select class="form-select" name="experience_level" id="experience_level" required style="border: 2px solid #e9ecef; border-radius: 15px; padding: 0.75rem 1rem;">
+                                            <option value="">Select your experience level</option>
+                                            <option value="entry">Entry Level (0-2 years)</option>
+                                            <option value="mid">Mid Level (3-5 years)</option>
+                                            <option value="senior">Senior Level (6-10 years)</option>
+                                            <option value="lead">Lead/Principal (10+ years)</option>
+                                        </select>
+                                        <small class="form-text text-muted mt-2">
+                                            <i class="fas fa-info-circle me-1"></i>Helps calibrate our analysis to your career stage
+                                        </small>
+                                    </div>
+
+                                    <!-- Preferred Location -->
+                                    <div class="form-section mb-4">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <div class="icon-circle me-3" style="width: 45px; height: 45px; background: linear-gradient(135deg, #17a2b8, #20c997);">
+                                                <i class="fas fa-map-marker-alt text-white"></i>
+                                            </div>
+                                            <label class="form-label fw-semibold mb-0" for="preferred_location">Preferred Location</label>
+                                        </div>
+                                        <input type="text" class="form-control" name="preferred_location" id="preferred_location" required placeholder="e.g., Boston, MA or Remote" style="border: 2px solid #e9ecef; border-radius: 15px; padding: 0.75rem 1rem;">
+                                        <small class="form-text text-muted mt-2">
+                                            <i class="fas fa-info-circle me-1"></i>Enter your preferred work location
+                                        </small>
+                                    </div>
+                                </div>
+
+                                <!-- Upload Button -->
+                                <div class="text-center mb-4">
+                                    <button type="submit" class="btn btn-primary btn-lg px-5 w-100" style="border-radius: 50px; background: linear-gradient(135deg, #007bff, #0056b3); border: none; transition: all 0.3s ease;" id="uploadBtn" disabled>
+                                        <i class="fas fa-upload me-2"></i>Analyze My Resume
+                                    </button>
+                                </div>
+
+                                <!-- Progress Bar -->
+                                <div class="upload-progress mt-3" id="uploadProgress" style="display: none;">
+                                    <div class="progress" style="height: 8px; border-radius: 4px;">
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%; background: linear-gradient(135deg, #007bff, #0056b3);" id="progressBar"></div>
+                                    </div>
+                                    <small class="text-muted mt-2 d-block text-center" id="progressText">Preparing upload...</small>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Card Footer -->
+                        <div class="card-footer text-center py-3" style="background: linear-gradient(135deg, rgba(0, 123, 255, 0.1), rgba(0, 86, 179, 0.1)); border-top: 1px solid rgba(0, 123, 255, 0.2);">
+                            <small class="text-muted">
+                                <i class="fas fa-shield-alt me-1"></i>Your resume is processed securely and privately
+                            </small>
+                        </div>
+                    </div>
+
+                    <!-- Features Section -->
+                    <div class="row mt-5">
+                        <div class="col-md-4 text-center mb-4">
+                            <div class="feature-highlight p-4">
+                                <div class="icon-circle mx-auto mb-3" style="width: 60px; height: 60px; background: linear-gradient(135deg, #e83e8c, #d63384);">
+                                    <i class="fas fa-magic fa-lg text-white"></i>
+                                </div>
+                                <h6 class="fw-bold mb-2">AI Analysis</h6>
+                                <p class="text-muted small mb-0">Advanced algorithms analyze your resume content, structure, and keywords</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4 text-center mb-4">
+                            <div class="feature-highlight p-4">
+                                <div class="icon-circle mx-auto mb-3" style="width: 60px; height: 60px; background: linear-gradient(135deg, #20c997, #17a2b8);">
+                                    <i class="fas fa-bullseye fa-lg text-white"></i>
+                                </div>
+                                <h6 class="fw-bold mb-2">Targeted Feedback</h6>
+                                <p class="text-muted small mb-0">Get specific recommendations based on your industry and experience level</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4 text-center mb-4">
+                            <div class="feature-highlight p-4">
+                                <div class="icon-circle mx-auto mb-3" style="width: 60px; height: 60px; background: linear-gradient(135deg, #6c757d, #495057);">
+                                    <i class="fas fa-rocket fa-lg text-white"></i>
+                                </div>
+                                <h6 class="fw-bold mb-2">Instant Results</h6>
+                                <p class="text-muted small mb-0">Receive comprehensive analysis and improvement suggestions in seconds</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-5 py-5">
+        <div class="container">
+            <div class="row mt-5">
+                <div class="col-12">
+                    <div class="footer-bottom text-center py-4" style="border-top: 2px solid transparent; background: linear-gradient(white, white) padding-box, linear-gradient(135deg, #667eea, #764ba2) border-box; border-radius: 20px;">
+                        <div class="d-flex align-items-center justify-content-center flex-wrap">
+                            <div class="icon-circle me-3 mb-2 mb-sm-0" style="width: 40px; height: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                                <i class="fas fa-file-alt text-white"></i>
+                            </div>
+                            <span class="gradient-text fw-bold fs-5 me-3">Resume Analyzer</span>
+                            <span class="text-muted">© <span id="currentYear">2024</span> All rights reserved</span>
+                        </div>
+                        <a href="terms.html">Terms and Conditions</a>
+                        <div class="social-links mt-3">
+                            <a href="#" class="btn btn-outline-primary btn-sm rounded-circle me-2" style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center;">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" class="btn btn-outline-primary btn-sm rounded-circle me-2" style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center;">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                            <a href="#" class="btn btn-outline-primary btn-sm rounded-circle" style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center;">
+                                <i class="fab fa-github"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/auth-cognito-hosted.js" defer></script>
+    <script src="../js/main.js" defer></script>
+    <script src="../js/upload.js" defer></script>
+
+</body>
+</html>

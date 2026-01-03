@@ -1,0 +1,165 @@
+.gradient-text {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.recommendation-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    border: none;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.recommendation-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+.recommendation-card .card-header {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    padding: 1.5rem;
+}
+
+.recommendation-card .card-body {
+    padding: 1.5rem;
+}
+
+.skills-list {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.skill-item {
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #dee2e6;
+    transition: all 0.3s ease;
+}
+
+.skill-item:hover {
+    background: #e9ecef;
+    border-left-color: #007bff;
+    transform: translateX(5px);
+}
+
+.skill-name {
+    font-weight: 500;
+    color: #495057;
+}
+
+.action-item {
+    padding: 1rem;
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+    border-radius: 10px;
+    border: 1px solid #e9ecef;
+    transition: all 0.3s ease;
+    height: 100%;
+}
+
+.action-item:hover {
+    border-color: #007bff;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+.action-number {
+    width: 30px;
+    height: 30px;
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 0.9rem;
+    margin-right: 1rem;
+    flex-shrink: 0;
+}
+
+.action-content {
+    flex: 1;
+}
+
+.skills-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.skills-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.skills-list::-webkit-scrollbar-thumb {
+    background: #007bff;
+    border-radius: 3px;
+}
+
+.skills-list::-webkit-scrollbar-thumb:hover {
+    background: #0056b3;
+}
+
+.resource-item {
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    border-radius: 8px;
+    border-left: 4px solid #2196f3;
+}
+
+.resource-skill {
+    font-weight: 600;
+    color: #1976d2;
+}
+
+.resource-platform {
+    color: #616161;
+    font-size: 0.9rem;
+}
+
+/* Print styles */
+@media print {
+    .btn, .d-flex.gap-3, nav {
+        display: none !important;
+    }
+
+    .recommendation-card {
+        break-inside: avoid;
+        box-shadow: none;
+        border: 1px solid #dee2e6;
+    }
+
+    body {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+
+    .container-lg {
+        margin-top: 0 !important;
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .recommendation-card .card-header,
+    .recommendation-card .card-body {
+        padding: 1rem;
+    }
+
+    .action-number {
+        width: 25px;
+        height: 25px;
+        font-size: 0.8rem;
+        margin-right: 0.75rem;
+    }
+    
+    .gradient-text {
+        font-size: 1.5rem !important;
+    }
+}

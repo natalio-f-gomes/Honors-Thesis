@@ -1,0 +1,433 @@
+{% extends 'statics/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-lg py-4">
+    {% if user.is_authenticated %}
+        <div class="row justify-content-center">
+            <!-- Page Header -->
+            <div class="col-12 mb-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h2 class="mb-1" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                            <i class="fas fa-chart-line me-2"></i>Skills Gap Analysis
+                        </h2>
+                        <p class="text-muted mb-0">Personalized recommendations based on job market analysis</p>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <a href="?refresh=true" class="btn btn-outline-info">
+                            <i class="fas fa-sync-alt me-1"></i>Refresh Analysis
+                        </a>
+                        <a href="{% url 'jobs_matched_from_resume_file' request.user.username resume.id %}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left me-1"></i>Back to Jobs
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            {% if recommended_skills and 'error' not in recommended_skills %}
+                <!-- Analysis Results -->
+                <div class="col-lg-10">
+                    <!-- Summary Card -->
+                    <div class="card border-0 shadow-lg mb-4" style="border-radius: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                        <div class="card-body text-white p-4">
+                            <div class="row align-items-center">
+                                <div class="col-md-8">
+                                    <h4 class="mb-2">
+                                        <i class="fas fa-lightbulb me-2"></i>Analysis Complete
+                                    </h4>
+                                    <p class="mb-0 opacity-90">We've analyzed job market requirements and identified areas for improvement</p>
+                                </div>
+                                <div class="col-md-4 text-md-end">
+                                    <div class="d-flex justify-content-md-end gap-3">
+                                        {% if recommended_skills.missing_technical_skills %}
+                                            <div class="text-center">
+                                                <div class="h3 mb-1">{{ recommended_skills.missing_technical_skills|length }}</div>
+                                                <small class="opacity-75">Skills</small>
+                                            </div>
+                                        {% endif %}
+                                        {% if recommended_skills.missing_certifications %}
+                                            <div class="text-center">
+                                                <div class="h3 mb-1">{{ recommended_skills.missing_certifications|length }}</div>
+                                                <small class="opacity-75">Certs</small>
+                                            </div>
+                                        {% endif %}
+                                        {% if recommended_skills.recommended_actions %}
+                                            <div class="text-center">
+                                                <div class="h3 mb-1">{{ recommended_skills.recommended_actions|length }}</div>
+                                                <small class="opacity-75">Actions</small>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recommendations Grid -->
+                    <div class="row">
+                        <!-- Missing Technical Skills -->
+                        {% if recommended_skills.missing_technical_skills %}
+                            <div class="col-lg-6 mb-4">
+                                <div class="recommendation-card h-100">
+                                    <div class="card-header">
+                                        <h5 class="mb-0 text-danger">
+                                            <i class="fas fa-code me-2"></i>Missing Technical Skills
+                                        </h5>
+                                        <small class="text-muted">Skills highly valued in the job market</small>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="skills-list">
+                                            {% for skill in recommended_skills.missing_technical_skills %}
+                                                <div class="skill-item">
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <span class="skill-name">{{ skill }}</span>
+                                                        <span class="badge bg-danger-subtle text-danger">Missing</span>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        <!-- Missing Education -->
+                        {% if recommended_skills.missing_education %}
+                            <div class="col-lg-6 mb-4">
+                                <div class="recommendation-card h-100">
+                                    <div class="card-header">
+                                        <h5 class="mb-0 text-warning">
+                                            <i class="fas fa-graduation-cap me-2"></i>Education Gaps
+                                        </h5>
+                                        <small class="text-muted">Educational requirements from job postings</small>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="skills-list">
+                                            {% for education in recommended_skills.missing_education %}
+                                                <div class="skill-item">
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <span class="skill-name">{{ education }}</span>
+                                                        <span class="badge bg-warning-subtle text-warning">Recommended</span>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        <!-- Missing Certifications -->
+                        {% if recommended_skills.missing_certifications %}
+                            <div class="col-lg-6 mb-4">
+                                <div class="recommendation-card h-100">
+                                    <div class="card-header">
+                                        <h5 class="mb-0 text-info">
+                                            <i class="fas fa-certificate me-2"></i>Missing Certifications
+                                        </h5>
+                                        <small class="text-muted">Industry-recognized certifications</small>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="skills-list">
+                                            {% for cert in recommended_skills.missing_certifications %}
+                                                <div class="skill-item">
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <span class="skill-name">{{ cert }}</span>
+                                                        <span class="badge bg-info-subtle text-info">Get Certified</span>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        <!-- Missing Experience -->
+                        {% if recommended_skills.missing_experience %}
+                            <div class="col-lg-6 mb-4">
+                                <div class="recommendation-card h-100">
+                                    <div class="card-header">
+                                        <h5 class="mb-0 text-primary">
+                                            <i class="fas fa-briefcase me-2"></i>Experience Gaps
+                                        </h5>
+                                        <small class="text-muted">Experience requirements from employers</small>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="skills-list">
+                                            {% for experience in recommended_skills.missing_experience %}
+                                                <div class="skill-item">
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <span class="skill-name">{{ experience }}</span>
+                                                        <span class="badge bg-primary-subtle text-primary">Build Experience</span>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        <!-- Missing Soft Skills -->
+                        {% if recommended_skills.missing_soft_skills %}
+                            <div class="col-lg-6 mb-4">
+                                <div class="recommendation-card h-100">
+                                    <div class="card-header">
+                                        <h5 class="mb-0 text-success">
+                                            <i class="fas fa-users me-2"></i>Soft Skills
+                                        </h5>
+                                        <small class="text-muted">Interpersonal and communication skills</small>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="skills-list">
+                                            {% for soft_skill in recommended_skills.missing_soft_skills %}
+                                                <div class="skill-item">
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <span class="skill-name">{{ soft_skill }}</span>
+                                                        <span class="badge bg-success-subtle text-success">Develop</span>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        <!-- Recommended Actions -->
+                        {% if recommended_skills.recommended_actions %}
+                            <div class="col-12 mb-4">
+                                <div class="recommendation-card">
+                                    <div class="card-header">
+                                        <h5 class="mb-0 text-dark">
+                                            <i class="fas fa-tasks me-2"></i>Recommended Actions
+                                        </h5>
+                                        <small class="text-muted">Specific steps to improve your profile</small>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            {% for action in recommended_skills.recommended_actions %}
+                                                <div class="col-md-6 mb-3">
+                                                    <div class="action-item">
+                                                        <div class="d-flex align-items-start">
+                                                            <div class="action-number">{{ forloop.counter }}</div>
+                                                            <div class="action-content">
+                                                                <p class="mb-0">{{ action }}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="row mt-4">
+                        <div class="col-12 text-center">
+                            <div class="d-flex gap-3 justify-content-center flex-wrap">
+                                <a href="{% url 'jobs_matched_from_resume_file' request.user.username resume.id %}" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-search me-2"></i>View Matching Jobs
+                                </a>
+                                <a href="{% url 'home' %}" class="btn btn-outline-secondary btn-lg">
+                                    <i class="fas fa-upload me-2"></i>Upload New Resume
+                                </a>
+                                <button class="btn btn-outline-info btn-lg" onclick="window.print()">
+                                    <i class="fas fa-print me-2"></i>Print Report
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            {% elif recommended_skills and 'error' in recommended_skills %}
+                <!-- Error State -->
+                <div class="col-lg-8">
+                    <div class="card border-0 shadow-sm text-center" style="border-radius: 15px;">
+                        <div class="card-body p-5">
+                            <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
+                            <h4 class="text-warning mb-3">Analysis Error</h4>
+                            <p class="text-muted mb-4">{{ recommended_skills.error }}</p>
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                                <a href="?refresh=true" class="btn btn-warning me-md-2" style="border-radius: 50px;">
+                                    <i class="fas fa-sync-alt me-2"></i>Retry Analysis
+                                </a>
+                                <a href="{% url 'jobs_matched_from_resume_file' request.user.username resume.id %}" class="btn btn-outline-secondary" style="border-radius: 50px;">
+                                    <i class="fas fa-arrow-left me-2"></i>Back to Jobs
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            {% else %}
+                <!-- Loading/No Data State -->
+                <div class="col-lg-8">
+                    <div class="card border-0 shadow-sm text-center" style="border-radius: 15px;">
+                        <div class="card-body p-5">
+                            <div class="spinner-border text-primary mb-3" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <h4 class="text-muted mb-3">Analyzing Your Resume</h4>
+                            <p class="text-muted mb-4">We're comparing your resume against job market requirements...</p>
+                            <div class="progress" style="height: 10px;">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 75%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    {% else %}
+        <!-- Not Authenticated -->
+        <div class="row justify-content-center">
+            <div class="col-lg-6 text-center">
+                <div class="card border-0 shadow-sm" style="border-radius: 15px;">
+                    <div class="card-body p-5">
+                        <i class="fas fa-lock fa-4x text-warning mb-4"></i>
+                        <h4 class="text-warning mb-3">Authentication Required</h4>
+                        <p class="text-muted mb-4">Please log in to view your skill recommendations.</p>
+                        <a href="{% url 'login' %}" class="btn btn-warning" style="border-radius: 50px;">
+                            <i class="fas fa-sign-in-alt me-2"></i>Login
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+<style>
+    .recommendation-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        border: none;
+        transition: all 0.3s ease;
+        overflow: hidden;
+    }
+
+    .recommendation-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+
+    .recommendation-card .card-header {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-bottom: 1px solid rgba(0,0,0,0.1);
+        padding: 1.5rem;
+    }
+
+    .recommendation-card .card-body {
+        padding: 1.5rem;
+    }
+
+    .skills-list {
+        max-height: 300px;
+        overflow-y: auto;
+    }
+
+    .skill-item {
+        padding: 0.75rem;
+        margin-bottom: 0.5rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+        border-left: 4px solid #dee2e6;
+        transition: all 0.3s ease;
+    }
+
+    .skill-item:hover {
+        background: #e9ecef;
+        border-left-color: #007bff;
+        transform: translateX(5px);
+    }
+
+    .skill-name {
+        font-weight: 500;
+        color: #495057;
+    }
+
+    .action-item {
+        padding: 1rem;
+        background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+        border-radius: 10px;
+        border: 1px solid #e9ecef;
+        transition: all 0.3s ease;
+    }
+
+    .action-item:hover {
+        border-color: #007bff;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
+
+    .action-number {
+        width: 30px;
+        height: 30px;
+        background: linear-gradient(135deg, #007bff, #0056b3);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 0.9rem;
+        margin-right: 1rem;
+        flex-shrink: 0;
+    }
+
+    .action-content {
+        flex: 1;
+    }
+
+    .skills-list::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .skills-list::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 3px;
+    }
+
+    .skills-list::-webkit-scrollbar-thumb {
+        background: #007bff;
+        border-radius: 3px;
+    }
+
+    .skills-list::-webkit-scrollbar-thumb:hover {
+        background: #0056b3;
+    }
+
+    /* Print styles */
+    @media print {
+        .btn, .d-flex.gap-3 {
+            display: none !important;
+        }
+
+        .recommendation-card {
+            break-inside: avoid;
+            box-shadow: none;
+            border: 1px solid #dee2e6;
+        }
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .recommendation-card .card-header,
+        .recommendation-card .card-body {
+            padding: 1rem;
+        }
+
+        .action-number {
+            width: 25px;
+            height: 25px;
+            font-size: 0.8rem;
+            margin-right: 0.75rem;
+        }
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,451 @@
+{% extends "statics/base.html" %}
+{% load static %}
+{% block title %}Account Settings{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    {% if user.is_authenticated and user_information %}
+        <!-- Page Header -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <div class="page-header text-center">
+                    <div class="profile-avatar mx-auto mb-3" style="width: 80px; height: 80px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);">
+                        <i class="fas fa-user fa-2x text-white"></i>
+                    </div>
+                    <h2 class="display-5 fw-bold mb-2" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                        Account Settings
+                    </h2>
+                    <p class="text-muted">Manage your profile and resume history</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- User Information Card -->
+            <div class="col-lg-4 mb-4">
+                <div class="card h-100 border-0 shadow-lg" style="border-radius: 20px; overflow: hidden;">
+                    <div class="card-header text-white text-center py-4" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                        <i class="fas fa-user-circle fa-3x mb-3 opacity-75"></i>
+                        <h5 class="mb-0">Profile Information</h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="info-item mb-3">
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="icon-circle me-3" style="width: 40px; height: 40px; background: linear-gradient(135deg, #28a745, #20c997); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-id-card text-white"></i>
+                                </div>
+                                <span class="text-muted small">First Name</span>
+                            </div>
+                            <div class="ms-5">
+                                <strong class="fs-6">{{ user_information.first_name|default:"Not provided" }}</strong>
+                            </div>
+                        </div>
+
+                        <div class="info-item mb-3">
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="icon-circle me-3" style="width: 40px; height: 40px; background: linear-gradient(135deg, #007bff, #0056b3); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-user text-white"></i>
+                                </div>
+                                <span class="text-muted small">Last Name</span>
+                            </div>
+                            <div class="ms-5">
+                                <strong class="fs-6">{{ user_information.last_name|default:"Not provided" }}</strong>
+                            </div>
+                        </div>
+
+                        <div class="info-item mb-4">
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="icon-circle me-3" style="width: 40px; height: 40px; background: linear-gradient(135deg, #fd7e14, #ff6b35); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-envelope text-white"></i>
+                                </div>
+                                <span class="text-muted small">Email Address</span>
+                            </div>
+                            <div class="ms-5">
+                                <strong class="fs-6">{{ user_information.email|default:"Not provided" }}</strong>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <h6 class="mb-3 text-primary">
+                            <i class="fas fa-cogs me-2"></i>Account Actions
+                        </h6>
+                        <div class="d-grid gap-2">
+                            <a href="{% url 'reset_password_page' request.user.id %}" class="btn btn-warning btn-lg" style="border-radius: 50px;">
+                                <i class="fas fa-key me-2"></i>Change Password
+                            </a>
+                            <a href="{% url 'update_account_info' request.user.id %}" class="btn btn-outline-primary btn-lg" style="border-radius: 50px;">
+                                <i class="fas fa-edit me-2"></i>Update Profile
+                            </a>
+
+                            <!-- Delete Account Button with Modal Trigger -->
+                            <button type="button" class="btn btn-outline-danger btn-lg" style="border-radius: 50px;" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">
+                                <i class="fas fa-trash me-2"></i>Delete Account
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resume History Card -->
+            <div class="col-lg-8 mb-4">
+                {% if user_resumes or manual_user_resumes %}
+                    <div class="card border-0 shadow-lg h-100" style="border-radius: 20px; overflow: hidden;">
+                        <div class="card-header text-white py-4" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%);">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-file-alt fa-2x me-3 opacity-75"></i>
+                                <div>
+                                    <h5 class="mb-1">Resume History</h5>
+                                    <p class="mb-0 opacity-75">Your uploaded and created resumes</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body p-4">
+                            <!-- Resume Message -->
+                            {% if resume_message %}
+                                <div class="alert alert-info border-0 rounded-pill mb-4" style="background: linear-gradient(135deg, rgba(13, 202, 240, 0.1), rgba(13, 110, 253, 0.1));">
+                                    <i class="fas fa-info-circle me-2"></i>{{ resume_message }}
+                                </div>
+                            {% endif %}
+
+                            <!-- File Resumes Section -->
+                            {% if user_resumes %}
+                                <div class="resume-section mb-5">
+                                    <div class="section-header mb-4">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <h6 class="text-primary mb-2">
+                                                    <i class="fas fa-upload me-2"></i>Uploaded Resume Files
+                                                </h6>
+                                                <div class="section-divider" style="height: 3px; background: linear-gradient(135deg, #007bff, #0056b3); border-radius: 2px; width: 60px;"></div>
+                                            </div>
+                                            <div>
+                                                <a href="{% url 'resume_upload_page' username %}" class="btn btn-primary btn-sm" style="border-radius: 25px;">
+                                                    <i class="fas fa-plus me-2"></i>Upload New Resume
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        {% for resume in user_resumes %}
+                                            <div class="col-md-6 mb-3">
+                                                <div class="resume-card p-3 border rounded-3 h-100" style="transition: all 0.3s ease; border: 2px solid #e9ecef !important;">
+                                                    <div class="d-flex align-items-start">
+                                                        <div class="resume-icon me-3" style="width: 50px; height: 50px; background: linear-gradient(135deg, #6f42c1, #8b5cf6); border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                                            <i class="fas fa-file-pdf text-white"></i>
+                                                        </div>
+                                                        <div class="resume-info flex-grow-1">
+                                                            <h6 class="mb-1">
+                                                                <a href="{% url 'resume_detail_page' user.username resume.id %}" class="text-decoration-none text-dark fw-bold">
+                                                                    {{ resume.get_career_field_display|default:"General" }} Resume
+                                                                </a>
+                                                            </h6>
+                                                            <p class="text-muted small mb-2">
+                                                                <i class="fas fa-calendar-alt me-1"></i>
+                                                                Uploaded {{ resume.uploaded_at|date:"M d, Y" }}
+                                                            </p>
+                                                            <div class="d-flex gap-2">
+                                                                <span class="badge bg-primary-subtle text-primary px-2 py-1">
+                                                                    <i class="fas fa-file me-1"></i>File Upload
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% else %}
+                    <!-- No Resumes Card -->
+                    <div class="card border-0 shadow-lg h-100" style="border-radius: 20px;">
+                        <div class="card-body p-5 text-center">
+                            <div class="empty-state-icon mb-4" style="width: 80px; height: 80px; background: linear-gradient(135deg, #6c757d, #495057); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
+                                <i class="fas fa-file-alt fa-2x text-white opacity-75"></i>
+                            </div>
+                            <h5 class="text-muted mb-3">No Resumes Yet</h5>
+                            <p class="text-muted mb-4">You haven't uploaded or created any resumes yet. Get started by creating your first resume!</p>
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                                <a href="{% url 'resume_upload_page' username %}" class="btn btn-primary btn-lg me-md-2" style="border-radius: 50px;">
+                                    <i class="fas fa-upload me-2"></i>Upload Resume
+                                </a>
+                                <a href="#" class="btn btn-outline-primary btn-lg" style="border-radius: 50px;">
+                                    <i class="fas fa-plus me-2"></i>Create Resume
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Delete Account Confirmation Modal -->
+        <div class="modal fade" id="deleteAccountModal" tabindex="-1" aria-labelledby="deleteAccountModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content" style="border-radius: 20px; border: none;">
+                    <div class="modal-header text-white" style="background: linear-gradient(135deg, #dc3545, #c82333); border-radius: 20px 20px 0 0;">
+                        <h5 class="modal-title fw-bold" id="deleteAccountModalLabel">
+                            <i class="fas fa-exclamation-triangle me-2"></i>Confirm Account Deletion
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body p-4">
+                        <div class="text-center mb-4">
+                            <div class="warning-icon mb-3" style="width: 80px; height: 80px; background: linear-gradient(135deg, #dc3545, #c82333); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
+                                <i class="fas fa-trash-alt fa-2x text-white"></i>
+                            </div>
+                            <h5 class="text-danger fw-bold mb-2">This action cannot be undone!</h5>
+                            <p class="text-muted mb-0">All your data, including resumes and analysis, will be permanently deleted.</p>
+                        </div>
+
+                        <form id="deleteAccountForm" method="POST" action="{% url 'confirm_delete_account' %}">
+                            {% csrf_token %}
+                            <div class="mb-4">
+                                <label for="confirmPassword" class="form-label fw-semibold">
+                                    <i class="fas fa-key me-2 text-danger"></i>Enter your password to confirm:
+                                </label>
+                                <input type="password" class="form-control form-control-lg" id="confirmPassword" name="password" required
+                                       style="border: 2px solid #e9ecef; border-radius: 15px; padding: 0.75rem 1rem;"
+                                       placeholder="Enter your current password">
+                                <div class="invalid-feedback" id="passwordError"></div>
+                            </div>
+
+                            <div class="alert alert-danger d-flex align-items-center mb-4" style="border-radius: 15px; border: none;">
+                                <i class="fas fa-exclamation-circle me-2"></i>
+                                <div>
+                                    <strong>Warning:</strong> This will permanently delete:
+                                    <ul class="mb-0 mt-2">
+                                        <li>Your account and profile information</li>
+                                        <li>All uploaded resumes and analysis</li>
+                                        <li>Job matching history and recommendations</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-danger btn-lg fw-bold" style="border-radius: 50px;">
+                                    <i class="fas fa-trash me-2"></i>Yes, Delete My Account
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary btn-lg" data-bs-dismiss="modal" style="border-radius: 50px;">
+                                    <i class="fas fa-times me-2"></i>Cancel
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {% else %}
+        <!-- Not Authenticated -->
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="card border-0 shadow-lg" style="border-radius: 20px;">
+                    <div class="card-body p-5 text-center">
+                        <div class="alert-icon mb-4" style="width: 80px; height: 80px; background: linear-gradient(135deg, #dc3545, #c82333); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
+                            <i class="fas fa-exclamation-triangle fa-2x text-white"></i>
+                        </div>
+                        <h4 class="text-danger mb-3">Authentication Required</h4>
+                        <p class="text-muted mb-4">You must be logged in to view your account settings.</p>
+                        <a href="{% url 'login' %}" class="btn btn-danger btn-lg" style="border-radius: 50px;">
+                            <i class="fas fa-sign-in-alt me-2"></i>Login to Continue
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+<style>
+    .page-header {
+        animation: fadeInUp 0.8s ease-out;
+    }
+
+    .card {
+        transition: all 0.3s ease;
+        animation: fadeInUp 0.6s ease-out;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.1) !important;
+    }
+
+    .resume-card:hover {
+        transform: translateY(-3px);
+        border-color: #007bff !important;
+        box-shadow: 0 8px 25px rgba(0,123,255,0.15);
+    }
+
+    .icon-circle {
+        transition: all 0.3s ease;
+    }
+
+    .icon-circle:hover {
+        transform: scale(1.1) rotate(5deg);
+    }
+
+    .resume-icon {
+        transition: all 0.3s ease;
+    }
+
+    .resume-card:hover .resume-icon {
+        transform: scale(1.1);
+    }
+
+    .btn {
+        transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+
+    .badge {
+        transition: all 0.3s ease;
+    }
+
+    .badge:hover {
+        transform: scale(1.05);
+    }
+
+    .modal-content {
+        box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+
+    .warning-icon {
+        animation: pulse 2s infinite;
+    }
+
+    .form-control:focus {
+        border-color: #dc3545;
+        box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+    }
+
+    .is-invalid {
+        border-color: #dc3545;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.05);
+        }
+        100% {
+            transform: scale(1);
+        }
+    }
+
+    .card:nth-child(1) { animation-delay: 0.1s; }
+    .card:nth-child(2) { animation-delay: 0.2s; }
+    .card:nth-child(3) { animation-delay: 0.3s; }
+
+    /* Responsive improvements */
+    @media (max-width: 768px) {
+        .col-lg-4, .col-lg-8 {
+            margin-bottom: 2rem;
+        }
+
+        .resume-card {
+            margin-bottom: 1rem;
+        }
+
+        .modal-dialog {
+            margin: 1rem;
+        }
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const deleteForm = document.getElementById('deleteAccountForm');
+    const passwordInput = document.getElementById('confirmPassword');
+    const passwordError = document.getElementById('passwordError');
+
+    deleteForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const password = passwordInput.value.trim();
+
+        if (!password) {
+            passwordInput.classList.add('is-invalid');
+            passwordError.textContent = 'Password is required';
+            return;
+        }
+
+        // Clear any previous errors
+        passwordInput.classList.remove('is-invalid');
+        passwordError.textContent = '';
+
+        // Show loading state
+        const submitBtn = deleteForm.querySelector('button[type="submit"]');
+        const originalBtnText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Deleting Account...';
+        submitBtn.disabled = true;
+
+        // Submit the form
+        fetch(deleteForm.action, {
+            method: 'POST',
+            body: new FormData(deleteForm),
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Show success message and redirect
+                submitBtn.innerHTML = '<i class="fas fa-check me-2"></i>Account Deleted';
+                submitBtn.classList.remove('btn-danger');
+                submitBtn.classList.add('btn-success');
+
+                setTimeout(() => {
+                    window.location.href = data.redirect_url || '/';
+                }, 1500);
+            } else {
+                // Show error
+                passwordInput.classList.add('is-invalid');
+                passwordError.textContent = data.error || 'Invalid password';
+
+                // Reset button
+                submitBtn.innerHTML = originalBtnText;
+                submitBtn.disabled = false;
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            passwordInput.classList.add('is-invalid');
+            passwordError.textContent = 'An error occurred. Please try again.';
+
+            // Reset button
+            submitBtn.innerHTML = originalBtnText;
+            submitBtn.disabled = false;
+        });
+    });
+
+    // Clear error when user types
+    passwordInput.addEventListener('input', function() {
+        this.classList.remove('is-invalid');
+        passwordError.textContent = '';
+    });
+});
+</script>
+{% endblock%}

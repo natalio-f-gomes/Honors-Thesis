@@ -1,0 +1,530 @@
+{% extends 'statics/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    {% if user.is_authenticated %}
+        <div class="row justify-content-center">
+            <!-- Page Header -->
+            <div class="col-12 mb-5">
+                <div class="page-header text-center animate-fade-in">
+                    <div class="profile-avatar mx-auto mb-3" style="width: 80px; height: 80px; background: linear-gradient(135deg, #17a2b8 0%, #138496 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 25px rgba(23, 162, 184, 0.3);">
+                        <i class="fas fa-user-edit fa-2x text-white"></i>
+                    </div>
+                    <h2 class="display-5 fw-bold mb-2" style="background: linear-gradient(135deg, #17a2b8 0%, #138496 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                        Update Account Information
+                    </h2>
+                    <p class="text-muted">Keep your profile information current and accurate</p>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-8">
+                <div class="card border-0 shadow-lg animate-fade-in" style="border-radius: 25px; overflow: hidden;">
+                    <!-- Card Header -->
+                    <div class="card-header text-white py-4" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                        <div class="d-flex align-items-center">
+                            <div class="icon-circle me-3" style="width: 50px; height: 50px; background: rgba(255, 255, 255, 0.2);">
+                                <i class="fas fa-id-card text-white"></i>
+                            </div>
+                            <div>
+                                <h5 class="mb-1 fw-bold">Profile Information</h5>
+                                <p class="mb-0 opacity-75">Update your personal details</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card Body -->
+                    <div class="card-body p-5" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);">
+                        <!-- Messages -->
+                        {% if messages %}
+                            <div class="mb-4">
+                                {% for message in messages %}
+                                    <div class="alert alert-warning border-0 rounded-pill animate-fade-in" style="background: linear-gradient(135deg, rgba(255, 193, 7, 0.1), rgba(224, 168, 0, 0.1)); border-left: 4px solid #ffc107;">
+                                        <i class="fas fa-exclamation-triangle me-2"></i>{{ message }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+
+                        <!-- Current Information Display -->
+                        <div class="current-info mb-4 p-4 rounded-3" style="background: linear-gradient(135deg, rgba(23, 162, 184, 0.05), rgba(19, 132, 150, 0.05)); border-left: 4px solid #17a2b8;">
+                            <h6 class="fw-bold mb-3 text-info">
+                                <i class="fas fa-info-circle me-2"></i>Current Information
+                            </h6>
+                            <div class="row">
+                                <div class="col-md-4 mb-2">
+                                    <small class="text-muted d-block">First Name</small>
+                                    <strong>{{ user.first_name|default:"Not set" }}</strong>
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <small class="text-muted d-block">Last Name</small>
+                                    <strong>{{ user.last_name|default:"Not set" }}</strong>
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <small class="text-muted d-block">Email</small>
+                                    <strong>{{ user.email|default:"Not set" }}</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Update Form -->
+                        <form action="{% url 'update_account_info' request.user.id %}" method="POST" class="update-form">
+                            {% csrf_token %}
+
+                            <!-- First Name Field -->
+                            <div class="form-section mb-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="icon-circle me-3" style="width: 45px; height: 45px; background: linear-gradient(135deg, #007bff, #0056b3);">
+                                        <i class="fas fa-user text-white"></i>
+                                    </div>
+                                    <label class="form-label fw-semibold mb-0" for="new_first_name">First Name</label>
+                                </div>
+                                <div class="input-group">
+                                    <span class="input-group-text border-0" style="background: linear-gradient(135deg, rgba(0, 123, 255, 0.1), rgba(0, 86, 179, 0.1)); border-radius: 15px 0 0 15px;">
+                                        <i class="fas fa-id-card text-primary"></i>
+                                    </span>
+                                    <input type="text" class="form-control border-start-0" id="new_first_name" name="new_first_name" placeholder="Enter your first name" value="{{ user.first_name }}" style="border-radius: 0 15px 15px 0;">
+                                </div>
+                                <small class="form-text text-muted mt-2">
+                                    <i class="fas fa-info-circle me-1"></i>This will be displayed on your profile
+                                </small>
+                            </div>
+
+                            <!-- Last Name Field -->
+                            <div class="form-section mb-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="icon-circle me-3" style="width: 45px; height: 45px; background: linear-gradient(135deg, #28a745, #20c997);">
+                                        <i class="fas fa-user-tag text-white"></i>
+                                    </div>
+                                    <label class="form-label fw-semibold mb-0" for="new_last_name">Last Name</label>
+                                </div>
+                                <div class="input-group">
+                                    <span class="input-group-text border-0" style="background: linear-gradient(135deg, rgba(40, 167, 69, 0.1), rgba(32, 201, 151, 0.1)); border-radius: 15px 0 0 15px;">
+                                        <i class="fas fa-signature text-success"></i>
+                                    </span>
+                                    <input type="text" class="form-control border-start-0" id="new_last_name" name="new_last_name" placeholder="Enter your last name" value="{{ user.last_name }}" style="border-radius: 0 15px 15px 0;">
+                                </div>
+                                <small class="form-text text-muted mt-2">
+                                    <i class="fas fa-info-circle me-1"></i>Your family or surname
+                                </small>
+                            </div>
+
+                            <!-- Email Field -->
+                            <div class="form-section mb-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="icon-circle me-3" style="width: 45px; height: 45px; background: linear-gradient(135deg, #6f42c1, #8b5cf6);">
+                                        <i class="fas fa-envelope text-white"></i>
+                                    </div>
+                                    <label class="form-label fw-semibold mb-0" for="new_email">Email Address</label>
+                                </div>
+                                <div class="input-group">
+                                    <span class="input-group-text border-0" style="background: linear-gradient(135deg, rgba(111, 66, 193, 0.1), rgba(139, 92, 246, 0.1)); border-radius: 15px 0 0 15px;">
+                                        <i class="fas fa-at text-purple"></i>
+                                    </span>
+                                    <input type="email" class="form-control border-start-0" id="new_email" name="new_email" placeholder="Enter your email address" value="{{ user.email }}" style="border-radius: 0 15px 15px 0;">
+                                </div>
+                                <small class="form-text text-muted mt-2">
+                                    <i class="fas fa-shield-alt me-1"></i>Used for account recovery and notifications
+                                </small>
+                            </div>
+
+                            <!-- Username Display (Read-only) -->
+                            <div class="form-section mb-4" style="background: rgba(108, 117, 125, 0.05);">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="icon-circle me-3" style="width: 45px; height: 45px; background: linear-gradient(135deg, #6c757d, #495057);">
+                                        <i class="fas fa-user-circle text-white"></i>
+                                    </div>
+                                    <label class="form-label fw-semibold mb-0">Username</label>
+                                </div>
+                                <div class="input-group">
+                                    <span class="input-group-text border-0" style="background: linear-gradient(135deg, rgba(108, 117, 125, 0.1), rgba(73, 80, 87, 0.1)); border-radius: 15px 0 0 15px;">
+                                        <i class="fas fa-lock text-muted"></i>
+                                    </span>
+                                    <input type="text" class="form-control border-start-0" value="{{ user.username }}" disabled style="border-radius: 0 15px 15px 0; background-color: #f8f9fa;">
+                                </div>
+                                <small class="form-text text-muted mt-2">
+                                    <i class="fas fa-info-circle me-1"></i>Username cannot be changed for security reasons
+                                </small>
+                            </div>
+
+                            <!-- Privacy Notice -->
+                            <div class="privacy-notice mb-4 p-4 rounded-3" style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05)); border-left: 4px solid #667eea;">
+                                <h6 class="fw-bold mb-3 text-primary">
+                                    <i class="fas fa-shield-alt me-2"></i>Privacy & Security
+                                </h6>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <ul class="list-unstyled mb-0">
+                                            <li class="mb-2">
+                                                <i class="fas fa-check-circle text-success me-2"></i>
+                                                <small>Information is encrypted</small>
+                                            </li>
+                                            <li class="mb-2">
+                                                <i class="fas fa-check-circle text-success me-2"></i>
+                                                <small>Never shared with third parties</small>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <ul class="list-unstyled mb-0">
+                                            <li class="mb-2">
+                                                <i class="fas fa-check-circle text-success me-2"></i>
+                                                <small>Changes are logged securely</small>
+                                            </li>
+                                            <li class="mb-2">
+                                                <i class="fas fa-check-circle text-success me-2"></i>
+                                                <small>Email verification required</small>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="text-center mb-4">
+                                <button type="submit" class="btn btn-info btn-lg px-5 w-100" style="border-radius: 50px; background: linear-gradient(135deg, #17a2b8, #138496); border: none; color: white; font-weight: 600;" id="updateBtn">
+                                    <i class="fas fa-save me-2"></i>Update Account Information
+                                </button>
+                            </div>
+
+                            <!-- Additional Actions -->
+                            <div class="text-center">
+                                <div class="d-flex justify-content-between align-items-center flex-wrap">
+                                    <a href="{% url 'user-account' user.id %}" class="text-decoration-none fw-semibold" style="color: #667eea;">
+                                        <i class="fas fa-arrow-left me-1"></i>Back to Account
+                                    </a>
+                                    <a href="{% url 'reset_password_page' user.id %}" class="text-decoration-none fw-semibold" style="color: #28a745;">
+                                        <i class="fas fa-key me-1"></i>Change Password
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Card Footer -->
+                    <div class="card-footer text-center py-3" style="background: linear-gradient(135deg, rgba(23, 162, 184, 0.1), rgba(19, 132, 150, 0.1)); border-top: 1px solid rgba(23, 162, 184, 0.2);">
+                        <small class="text-muted">
+                            <i class="fas fa-clock me-1"></i>Changes take effect immediately
+                        </small>
+                    </div>
+                </div>
+
+                <!-- Account Features -->
+                <div class="row mt-4">
+                    <div class="col-md-4 text-center mb-3">
+                        <div class="account-feature p-3">
+                            <div class="icon-circle mx-auto mb-2" style="width: 50px; height: 50px; background: linear-gradient(135deg, #007bff, #0056b3);">
+                                <i class="fas fa-sync-alt text-white"></i>
+                            </div>
+                            <h6 class="fw-bold mb-1">Real-time Updates</h6>
+                            <small class="text-muted">Changes reflect instantly across your account</small>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center mb-3">
+                        <div class="account-feature p-3">
+                            <div class="icon-circle mx-auto mb-2" style="width: 50px; height: 50px; background: linear-gradient(135deg, #28a745, #20c997);">
+                                <i class="fas fa-history text-white"></i>
+                            </div>
+                            <h6 class="fw-bold mb-1">Change History</h6>
+                            <small class="text-muted">All updates are logged for security</small>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center mb-3">
+                        <div class="account-feature p-3">
+                            <div class="icon-circle mx-auto mb-2" style="width: 50px; height: 50px; background: linear-gradient(135deg, #6f42c1, #8b5cf6);">
+                                <i class="fas fa-bell text-white"></i>
+                            </div>
+                            <h6 class="fw-bold mb-1">Notifications</h6>
+                            <small class="text-muted">Get alerts about account changes</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <!-- Not Authenticated -->
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="card border-0 shadow-lg" style="border-radius: 20px;">
+                    <div class="card-body p-5 text-center">
+                        <div class="alert-icon mb-4" style="width: 80px; height: 80px; background: linear-gradient(135deg, #dc3545, #c82333); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
+                            <i class="fas fa-exclamation-triangle fa-2x text-white"></i>
+                        </div>
+                        <h4 class="text-danger mb-3">Authentication Required</h4>
+                        <p class="text-muted mb-4">You must be logged in to update your account information.</p>
+                        <a href="{% url 'login' %}" class="btn btn-danger btn-lg" style="border-radius: 50px;">
+                            <i class="fas fa-sign-in-alt me-2"></i>Login to Continue
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+<style>
+    .page-header {
+        animation: fadeInUp 0.8s ease-out;
+    }
+
+    .card {
+        transition: all 0.3s ease;
+        animation: fadeInUp 0.6s ease-out;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.1) !important;
+    }
+
+    .form-section {
+        padding: 1.5rem;
+        border-radius: 15px;
+        background: rgba(102, 126, 234, 0.05);
+        margin-bottom: 1.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .form-section:hover {
+        background: rgba(102, 126, 234, 0.1);
+        transform: translateX(5px);
+    }
+
+    .icon-circle {
+        transition: all 0.3s ease;
+    }
+
+    .icon-circle:hover {
+        transform: scale(1.1) rotate(5deg);
+    }
+
+    .form-control, .input-group-text {
+        border: 2px solid #e9ecef;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    }
+
+    .input-group:focus-within .input-group-text {
+        border-color: #667eea;
+    }
+
+    .btn {
+        transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+
+    .btn-info:hover {
+        background: linear-gradient(135deg, #138496, #117a8b) !important;
+    }
+
+    .account-feature {
+        transition: all 0.3s ease;
+        border-radius: 15px;
+        cursor: pointer;
+    }
+
+    .account-feature:hover {
+        background: rgba(102, 126, 234, 0.05);
+        transform: translateY(-5px);
+    }
+
+    .account-feature .icon-circle {
+        transition: all 0.3s ease;
+    }
+
+    .account-feature:hover .icon-circle {
+        transform: scale(1.2) rotate(10deg);
+    }
+
+    .current-info {
+        transition: all 0.3s ease;
+    }
+
+    .current-info:hover {
+        background: rgba(23, 162, 184, 0.1) !important;
+    }
+
+    .privacy-notice {
+        transition: all 0.3s ease;
+    }
+
+    .privacy-notice:hover {
+        background: rgba(102, 126, 234, 0.1) !important;
+    }
+
+    .text-purple { color: #6f42c1; }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .animate-fade-in {
+        animation: fadeInUp 0.8s ease-out;
+    }
+
+    /* Responsive improvements */
+    @media (max-width: 768px) {
+        .form-section {
+            padding: 1rem;
+        }
+
+        .d-flex.justify-content-between {
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .account-feature {
+            margin-bottom: 1rem;
+        }
+
+        .current-info .row .col-md-4 {
+            margin-bottom: 1rem;
+        }
+    }
+
+    /* Animation delays for staggered effect */
+    .account-feature:nth-child(1) { animation: fadeInUp 0.8s ease-out 0.1s both; }
+    .account-feature:nth-child(2) { animation: fadeInUp 0.8s ease-out 0.2s both; }
+    .account-feature:nth-child(3) { animation: fadeInUp 0.8s ease-out 0.3s both; }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('.update-form');
+        const updateBtn = document.getElementById('updateBtn');
+        const inputs = document.querySelectorAll('input:not([disabled])');
+
+        // Track changes to enable/disable update button
+        let hasChanges = false;
+        const originalValues = {};
+
+        // Store original values
+        inputs.forEach(input => {
+            originalValues[input.name] = input.value;
+        });
+
+        // Check for changes
+        function checkForChanges() {
+            hasChanges = false;
+            inputs.forEach(input => {
+                if (originalValues[input.name] !== input.value) {
+                    hasChanges = true;
+                }
+            });
+
+            // Update button state
+            if (hasChanges) {
+                updateBtn.style.background = 'linear-gradient(135deg, #17a2b8, #138496)';
+                updateBtn.disabled = false;
+            } else {
+                updateBtn.style.background = 'linear-gradient(135deg, #6c757d, #495057)';
+                updateBtn.disabled = true;
+            }
+        }
+
+        // Add event listeners
+        inputs.forEach(input => {
+            input.addEventListener('input', checkForChanges);
+            input.addEventListener('change', checkForChanges);
+        });
+
+        // Initial check
+        checkForChanges();
+
+        // Form submission with loading state
+        if (form && updateBtn) {
+            form.addEventListener('submit', function(e) {
+                if (!hasChanges) {
+                    e.preventDefault();
+                    alert('No changes detected. Please modify at least one field to update your account.');
+                    return false;
+                }
+
+                // Add loading state
+                const originalText = updateBtn.innerHTML;
+                updateBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Updating Information...';
+                updateBtn.disabled = true;
+
+                // Reset button after 5 seconds (in case of error)
+                setTimeout(() => {
+                    updateBtn.innerHTML = originalText;
+                    updateBtn.disabled = false;
+                }, 5000);
+            });
+        }
+
+        // Form field focus effects
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                const section = this.closest('.form-section');
+                if (section) {
+                    section.style.transform = 'translateX(5px)';
+                    section.style.background = 'rgba(102, 126, 234, 0.12)';
+                }
+            });
+
+            input.addEventListener('blur', function() {
+                const section = this.closest('.form-section');
+                if (section) {
+                    section.style.transform = 'translateX(0)';
+                    section.style.background = 'rgba(102, 126, 234, 0.05)';
+                }
+            });
+        });
+
+        // Email validation
+        const emailInput = document.getElementById('new_email');
+        if (emailInput) {
+            emailInput.addEventListener('blur', function() {
+                const email = this.value.trim();
+                if (email && !isValidEmail(email)) {
+                    this.classList.add('is-invalid');
+                    this.setCustomValidity('Please enter a valid email address');
+                } else {
+                    this.classList.remove('is-invalid');
+                    this.setCustomValidity('');
+                }
+            });
+        }
+
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        // Name validation (no numbers or special characters)
+        const nameInputs = [document.getElementById('new_first_name'), document.getElementById('new_last_name')];
+        nameInputs.forEach(input => {
+            if (input) {
+                input.addEventListener('input', function() {
+                    const value = this.value;
+                    const nameRegex = /^[a-zA-Z\s-']+$/;
+
+                    if (value && !nameRegex.test(value)) {
+                        this.classList.add('is-invalid');
+                        this.setCustomValidity('Names should only contain letters, spaces, hyphens, and apostrophes');
+                    } else {
+                        this.classList.remove('is-invalid');
+                        this.setCustomValidity('');
+                    }
+                });
+            }
+        });
+    });
+</script>
+{% endblock %}

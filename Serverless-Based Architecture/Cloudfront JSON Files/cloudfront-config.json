@@ -1,0 +1,48 @@
+{
+  "CallerReference": "resume-analyzer-2024-11-02",
+  "Comment": "CloudFront distribution for resume-analyzer.net",
+  "Enabled": true,
+  "Origins": {
+    "Quantity": 1,
+    "Items": [
+      {
+        "Id": "S3-resume-analyzer",
+        "DomainName": "resume-analyzer.net.s3.amazonaws.com",
+        "OriginAccessControlId": "XYZ21231H2",
+        "S3OriginConfig": {
+          "OriginAccessIdentity": ""
+        }
+      }
+    ]
+  },
+  "DefaultRootObject": "index.html",
+  "DefaultCacheBehavior": {
+    "TargetOriginId": "S3-resume-analyzer",
+    "ViewerProtocolPolicy": "redirect-to-https",
+    "AllowedMethods": {
+      "Quantity": 2,
+      "Items": ["GET", "HEAD"],
+      "CachedMethods": {
+        "Quantity": 2,
+        "Items": ["GET", "HEAD"]
+      }
+    },
+    "Compress": true,
+    "ForwardedValues": {
+      "QueryString": false,
+      "Cookies": {
+        "Forward": "none"
+      }
+    },
+    "MinTTL": 0,
+    "DefaultTTL": 86400,
+    "MaxTTL": 31536000,
+    "TrustedSigners": {
+      "Enabled": false,
+      "Quantity": 0
+    }
+  },
+  "ViewerCertificate": {
+    "CloudFrontDefaultCertificate": true
+  }
+}

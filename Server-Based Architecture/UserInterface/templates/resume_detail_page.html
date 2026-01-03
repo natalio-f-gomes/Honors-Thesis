@@ -1,0 +1,404 @@
+{% extends 'statics/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-lg py-4">
+    {% if user.is_authenticated %}
+        {% if resume_file %}
+
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <!-- Resume Header Card -->
+                    <div class="card mb-4 shadow-lg border-0" style="border-radius: 20px; overflow: hidden;">
+                        <div class="card-header text-white text-center py-4" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                            <i class="fas fa-file-alt fa-3x mb-3 opacity-75"></i>
+                            <h2 class="mb-2">{{ resume_file.name|default:"Professional Resume" }}</h2>
+                            <p class="mb-0 opacity-75">Parsed Resume Information</p>
+                        </div>
+
+                    <!-- Action Buttons -->
+                            <div class="row mt-4 mb-3">
+                                <div class="col-12 text-center">
+                                    <a href="{% url 'jobs_matched_from_resume_file' request.user.username resume_id %}" class="btn btn-primary me-2" style="border-radius: 50px; padding: 0.75rem 2rem;">
+                                        <i class="fas fa-search me-2"></i>Find Jobs
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body p-4">
+                            <!-- Personal Information Section -->
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="icon-circle me-3" style="width: 50px; height: 50px; background: linear-gradient(135deg, #6f42c1, #8b5cf6); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                            <i class="fas fa-user text-white"></i>
+                                        </div>
+                                        <div>
+                                            <h5 class="mb-0 text-primary">Personal Information</h5>
+                                            <p class="mb-0 text-muted">Contact Details</p>
+                                        </div>
+                                    </div>
+                                    <div class="bg-light rounded p-4">
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <strong class="text-primary">Name:</strong>
+                                                <div class="mt-1">{{ resume_file.name|default:"Not specified" }}</div>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <strong class="text-primary">Email:</strong>
+                                                <div class="mt-1">
+                                                    {% if resume_file.email %}
+                                                        <a href="mailto:{{ resume_file.email }}" class="text-decoration-none">{{ resume_file.email }}</a>
+                                                    {% else %}
+                                                        <span class="text-muted">Not specified</span>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <strong class="text-primary">Phone:</strong>
+                                                <div class="mt-1">
+                                                    {% if resume_file.phone %}
+                                                        <a href="tel:{{ resume_file.phone }}" class="text-decoration-none">{{ resume_file.phone }}</a>
+                                                    {% else %}
+                                                        <span class="text-muted">Not specified</span>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <strong class="text-primary">Location:</strong>
+                                                <div class="mt-1">{{ resume_file.location|default:"Not specified" }}</div>
+                                            </div>
+
+                                             <div class="col-md-6 mb-3">
+                                                <strong class="text-primary">Career Field</strong>
+                                                <div class="mt-1"><p style="font-weight: bold">{{ resume.get_career_field_display|default:"Not specified" }}</p></div>
+
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <strong class="text-primary">Experience Level:</strong>
+                                                <div class="mt-1">{{ resume.get_experience_level_display|default:"Not specified" }}</div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr class="my-4" style="border: none; height: 2px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 1px;">
+
+                            <!-- Skills Section -->
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="icon-circle me-3" style="width: 50px; height: 50px; background: linear-gradient(135deg, #007bff, #0056b3); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                            <i class="fas fa-code text-white"></i>
+                                        </div>
+                                        <div>
+                                            <h5 class="mb-0 text-primary">Skills & Technologies</h5>
+                                            <p class="mb-0 text-muted">Technical Expertise</p>
+                                        </div>
+                                    </div>
+                                    <div class="bg-light rounded p-3">
+                                        {% if resume_file.skills %}
+                                            <div class="d-flex flex-wrap gap-2">
+                                                {% for skill in resume_file.skills %}
+                                                    <span class="badge bg-primary px-3 py-2">
+                                                        <i class="fas fa-check-circle me-1"></i>{{ skill }}
+                                                    </span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            <span class="text-muted">No skills specified</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Education Section -->
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="icon-circle me-3" style="width: 50px; height: 50px; background: linear-gradient(135deg, #28a745, #20c997); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                            <i class="fas fa-graduation-cap text-white"></i>
+                                        </div>
+                                        <div>
+                                            <h5 class="mb-0 text-success">Education</h5>
+                                            <p class="mb-0 text-muted">Academic Background</p>
+                                        </div>
+                                    </div>
+                                    <div class="bg-light rounded p-3">
+                                        {% if resume_file.education %}
+                                            {% for edu in resume_file.education %}
+                                                <div class="education-item mb-3 {% if not forloop.last %}border-bottom pb-3{% endif %}">
+                                                    <div class="row">
+                                                        <div class="col-md-8">
+                                                            <h6 class="mb-1 text-dark">{{ edu.degree|default:"Degree" }} {% if edu.field %}in {{ edu.field }}{% endif %}</h6>
+                                                            <p class="mb-1 text-primary">{{ edu.school|default:"Institution not specified" }}</p>
+                                                        </div>
+                                                        <div class="col-md-4 text-md-end">
+                                                            {% if edu.graduation_year %}
+                                                                <span class="badge bg-success-subtle text-success px-3 py-2">
+                                                                    <i class="fas fa-calendar me-1"></i>{{ edu.graduation_year }}
+                                                                </span>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        {% else %}
+                                            <span class="text-muted">No education information specified</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Experience Section -->
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="icon-circle me-3" style="width: 50px; height: 50px; background: linear-gradient(135deg, #fd7e14, #ff6b35); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                            <i class="fas fa-briefcase text-white"></i>
+                                        </div>
+                                        <div>
+                                            <h5 class="mb-0 text-warning">Work Experience</h5>
+                                            <p class="mb-0 text-muted">Professional History</p>
+                                        </div>
+                                    </div>
+                                    <div class="bg-light rounded p-3">
+                                        {% if resume_file.experience %}
+                                            {% for exp in resume_file.experience %}
+                                                <div class="experience-item mb-4 {% if not forloop.last %}border-bottom pb-4{% endif %}">
+                                                    <div class="row">
+                                                        <div class="col-md-8">
+                                                            <h6 class="mb-1 text-dark">{{ exp.title|default:"Position" }}</h6>
+                                                            <p class="mb-1 text-primary">{{ exp.company|default:"Company" }}</p>
+                                                            {% if exp.location %}
+                                                                <p class="mb-2 text-muted small">
+                                                                    <i class="fas fa-map-marker-alt me-1"></i>{{ exp.location }}
+                                                                </p>
+                                                            {% endif %}
+                                                            {% if exp.description %}
+                                                                <p class="mb-0 text-dark">{{ exp.description }}</p>
+                                                            {% endif %}
+                                                        </div>
+                                                        <div class="col-md-4 text-md-end">
+                                                            {% if exp.start_date or exp.end_date %}
+                                                                <span class="badge bg-warning-subtle text-warning px-3 py-2">
+                                                                    <i class="fas fa-calendar me-1"></i>
+                                                                    {{ exp.start_date|default:"" }}{% if exp.start_date and exp.end_date %} - {% endif %}{{ exp.end_date|default:"Present" }}
+                                                                </span>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        {% else %}
+                                            <span class="text-muted">No work experience specified</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Projects Section -->
+                            {% if resume_file.projects %}
+                                <div class="row mb-4">
+                                    <div class="col-12">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <div class="icon-circle me-3" style="width: 50px; height: 50px; background: linear-gradient(135deg, #17a2b8, #138496); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                                <i class="fas fa-project-diagram text-white"></i>
+                                            </div>
+                                            <div>
+                                                <h5 class="mb-0 text-info">Projects</h5>
+                                                <p class="mb-0 text-muted">Notable Work</p>
+                                            </div>
+                                        </div>
+                                        <div class="bg-light rounded p-3">
+                                            {% for project in resume_file.projects %}
+                                                <div class="project-item mb-3 {% if not forloop.last %}border-bottom pb-3{% endif %}">
+                                                    <h6 class="mb-2 text-dark">{{ project.name|default:"Project" }}</h6>
+                                                    {% if project.description %}
+                                                        <p class="mb-2 text-dark">{{ project.description }}</p>
+                                                    {% endif %}
+                                                    {% if project.technologies %}
+                                                        <div class="d-flex flex-wrap gap-1">
+                                                            {% for tech in project.technologies %}
+                                                                <span class="badge bg-info-subtle text-info px-2 py-1">{{ tech }}</span>
+                                                            {% endfor %}
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                            <!-- Job Search Configuration (Optional Display) -->
+                            {% if resume_file.job_search_request %}
+                                <div class="row mb-4">
+                                    <div class="col-12">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <div class="icon-circle me-3" style="width: 50px; height: 50px; background: linear-gradient(135deg, #dc3545, #c82333); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                                <i class="fas fa-search text-white"></i>
+                                            </div>
+                                            <div>
+                                                <h5 class="mb-0 text-danger">Job Search Preferences</h5>
+                                                <p class="mb-0 text-muted">Recommended Settings</p>
+                                            </div>
+                                        </div>
+                                        <div class="bg-light rounded p-3">
+                                            <div class="row">
+                                                {% if resume_file.job_search_request.job_title_pattern_or %}
+                                                    <div class="col-md-6 mb-3">
+                                                        <strong class="text-danger">Target Job Titles:</strong>
+                                                        <div class="mt-1">
+                                                            {% for title in resume_file.job_search_request.job_title_pattern_or %}
+                                                                <span class="badge bg-danger-subtle text-danger me-1 mb-1">{{ title }}</span>
+                                                            {% endfor %}
+                                                        </div>
+                                                    </div>
+                                                {% endif %}
+                                                {% if resume_file.job_search_request.job_seniority_or %}
+                                                    <div class="col-md-6 mb-3">
+                                                        <strong class="text-danger">Seniority Level:</strong>
+                                                        <div class="mt-1">
+                                                            {% for level in resume_file.job_search_request.job_seniority_or %}
+                                                                <span class="badge bg-warning-subtle text-warning me-1 mb-1">{{ level }}</span>
+                                                            {% endfor %}
+                                                        </div>
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+
+
+                    </div>
+
+                    <!-- Resume Statistics Card -->
+                    <div class="card shadow-sm border-0 mt-4" style="border-radius: 15px;">
+                        <div class="card-body p-4">
+                            <h5 class="card-title mb-3">
+                                <i class="fas fa-chart-pie me-2 text-primary"></i>Resume Analysis
+                            </h5>
+                            <div class="row text-center">
+                                <div class="col-lg-3 col-md-6 mb-3">
+                                    <div class="p-3 bg-light rounded">
+                                        <i class="fas fa-code fa-2x text-primary mb-2"></i>
+                                        <h6 class="mb-0">{{ resume_file.skills|length|default:0 }}</h6>
+                                        <small class="text-muted">Skills Listed</small>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-6 mb-3">
+                                    <div class="p-3 bg-light rounded">
+                                        <i class="fas fa-briefcase fa-2x text-warning mb-2"></i>
+                                        <h6 class="mb-0">{{ resume_file.experience|length|default:0 }}</h6>
+                                        <small class="text-muted">Work Experiences</small>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-6 mb-3">
+                                    <div class="p-3 bg-light rounded">
+                                        <i class="fas fa-graduation-cap fa-2x text-success mb-2"></i>
+                                        <h6 class="mb-0">{{ resume_file.education|length|default:0 }}</h6>
+                                        <small class="text-muted">Education Entries</small>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-6 mb-3">
+                                    <div class="p-3 bg-light rounded">
+                                        <i class="fas fa-project-diagram fa-2x text-info mb-2"></i>
+                                        <h6 class="mb-0">{{ resume_file.projects|length|default:0 }}</h6>
+                                        <small class="text-muted">Projects</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <!-- No Resume Found -->
+            <div class="row justify-content-center">
+                <div class="col-lg-6 text-center">
+                    <div class="card border-0 shadow-sm" style="border-radius: 15px;">
+                        <div class="card-body p-5">
+                            <i class="fas fa-file-alt fa-4x text-muted mb-4"></i>
+                            <h4 class="text-muted mb-3">No Resume Found</h4>
+                            <p class="text-muted mb-4">It looks like this resume doesn't exist or couldn't be processed.</p>
+                            <a href="#" class="btn btn-primary" style="border-radius: 50px; padding: 0.75rem 2rem;">
+                                <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    {% else %}
+        <!-- Not Authenticated -->
+        <div class="row justify-content-center">
+            <div class="col-lg-6 text-center">
+                <div class="card border-0 shadow-sm" style="border-radius: 15px;">
+                    <div class="card-body p-5">
+                        <i class="fas fa-lock fa-4x text-warning mb-4"></i>
+                        <h4 class="text-warning mb-3">Authentication Required</h4>
+                        <p class="text-muted mb-4">Please log in to view your resume details.</p>
+                        <a href="{% url 'login' %}" class="btn btn-warning" style="border-radius: 50px; padding: 0.75rem 2rem;">
+                            <i class="fas fa-sign-in-alt me-2"></i>Login
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+<style>
+    .icon-circle {
+        transition: all 0.3s ease;
+    }
+
+    .icon-circle:hover {
+        transform: scale(1.1);
+    }
+
+    .card {
+        transition: all 0.3s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1) !important;
+    }
+
+    .badge {
+        transition: all 0.3s ease;
+    }
+
+    .badge:hover {
+        transform: scale(1.05);
+    }
+
+    .btn {
+        transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+
+    .experience-item, .education-item, .project-item {
+        transition: all 0.3s ease;
+    }
+
+    .experience-item:hover, .education-item:hover, .project-item:hover {
+        background-color: rgba(0,123,255,0.05);
+        border-radius: 8px;
+        padding: 0.5rem;
+        margin: -0.5rem;
+    }
+</style>
+{% endblock %}

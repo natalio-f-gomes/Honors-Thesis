@@ -1,0 +1,118 @@
+{% load static %}
+<footer class="mt-5 py-5">
+    <div class="container">
+
+
+        <!-- Footer Bottom -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="footer-bottom text-center py-4" style="border-top: 2px solid transparent; background: linear-gradient(white, white) padding-box, linear-gradient(135deg, #667eea, #764ba2) border-box; border-radius: 20px;">
+                    <div class="d-flex align-items-center justify-content-center flex-wrap">
+                        <div class="icon-circle me-3 mb-2 mb-sm-0" style="width: 40px; height: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                            <i class="fas fa-file-alt text-white"></i>
+                        </div>
+                        <span class="gradient-text fw-bold fs-5 me-3">Resume Analyzer</span>
+                        <span class="text-muted">© {{ current_year|default:"2024" }} All rights reserved</span>
+                    </div>
+<a href="{% url 'terms_and_conditions' %}">Terms and Conditions</a>
+                    <div class="social-links mt-3">
+                        <a href="#" class="btn btn-outline-primary btn-sm rounded-circle me-2" style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center;">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="btn btn-outline-primary btn-sm rounded-circle me-2" style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center;">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="#" class="btn btn-outline-primary btn-sm rounded-circle" style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center;">
+                            <i class="fab fa-github"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+<style>
+    footer {
+        background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+        position: relative;
+    }
+
+    footer::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #667eea, transparent);
+    }
+
+    .feature-stat {
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .feature-stat:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    .feature-stat .icon-circle {
+        transition: all 0.3s ease;
+    }
+
+    .feature-stat:hover .icon-circle {
+        transform: scale(1.1) rotate(5deg);
+    }
+
+    .social-links a {
+        transition: all 0.3s ease;
+    }
+
+    .social-links a:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+    }
+
+    .card {
+        animation-delay: 0.3s;
+    }
+
+    .feature-showcase {
+        position: relative;
+    }
+
+    .feature-showcase::after {
+        content: '';
+        position: absolute;
+        bottom: -20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        border-radius: 2px;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .footer-bottom .d-flex {
+            flex-direction: column;
+        }
+
+        .footer-bottom .me-3 {
+            margin-right: 0 !important;
+            margin-bottom: 0.5rem;
+        }
+
+        .row.g-3 {
+            gap: 0.5rem !important;
+        }
+
+        .col-md-4 {
+            margin-bottom: 1rem;
+        }
+    }
+</style>

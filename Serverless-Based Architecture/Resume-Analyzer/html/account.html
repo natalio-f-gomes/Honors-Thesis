@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My Account - Resume Analyzer</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/account.css">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container">
+      <a class="navbar-brand me-2 fw-bold gradient-text fs-3" href="../index.html">
+        <i class="fas fa-file-alt me-2"></i>Resume Analyzer
+      </a>
+      <button class="navbar-toggler shadow-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarButtonsExample">
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarButtonsExample">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
+        <div class="d-flex align-items-center">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item"><a class="nav-link fw-semibold" href="../index.html"><i class="fas fa-home me-2"></i>Home</a></li>
+            <li class="nav-item"><a class="nav-link fw-semibold" href="about.html"><i class="fas fa-info-circle me-2"></i>About</a></li>
+            <li class="nav-item"><a class="nav-link fw-semibold" href="contact.html"><i class="fas fa-envelope me-2"></i>Contact</a></li>
+            <li class="nav-item"><a class="nav-link fw-semibold" href="feedback.html"><i class="fas fa-comment-dots me-2"></i>Feedback</a></li>
+            <li class="nav-item" id="accountNavItem" style="display: none;">
+              <a class="nav-link fw-semibold" href="account.html"><i class="fas fa-user-circle me-2"></i>My Account</a>
+            </li>
+          </ul>
+          <button id="loginBtn" class="btn btn-success px-4 me-2 ms-3">
+            <i class="fas fa-sign-in-alt me-2"></i>Login
+          </button>
+          <button id="logoutBtn" class="btn btn-danger px-4 me-2 ms-3" style="display: none;">
+            <i class="fas fa-sign-out-alt me-2"></i>Logout
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="animate-fade-in">
+    <div class="container py-5">
+      <!-- Authenticated -->
+      <div id="authenticatedContent" style="display: none;">
+        <!-- Page Header -->
+        <div class="row mb-4">
+          <div class="col-12 text-center">
+            <h2 class="display-6 fw-bold gradient-text mb-2">My Account</h2>
+            <p class="text-muted mb-3">
+              <i class="fas fa-envelope me-2"></i>
+              Signed in as <strong id="userEmail">Loading…</strong>
+            </p>
+            <div class="d-flex justify-content-center align-items-center gap-3 flex-wrap">
+              <span class="badge bg-info-subtle text-info px-3 py-2 fs-6">
+                <i class="fas fa-file-alt me-2"></i>
+                <span id="resumeCount">0</span> / 5 Resumes
+              </span>
+              <a href="upload.html" id="uploadNewBtn" class="btn btn-success px-4 py-2" style="border-radius: 50px;">
+                <i class="fas fa-cloud-upload-alt me-2"></i>Upload New Resume
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Resume History -->
+        <div class="row">
+          <div class="col-12">
+            <div class="card border-0 shadow-lg h-100" style="border-radius: 20px; overflow: hidden;">
+              <div class="card-header text-white py-4" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%);">
+                <div class="d-flex align-items-center">
+                  <i class="fas fa-file-alt fa-2x me-3 opacity-75"></i>
+                  <div>
+                    <h5 class="mb-1">Resume History</h5>
+                    <p class="mb-0 opacity-75">Your uploaded and created resumes</p>
+                  </div>
+                </div>
+              </div>
+              <div class="card-body p-4" id="resumeHistoryContainer">
+                <div class="text-center py-5">
+                  <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>
+                  <p class="text-muted mt-3">Loading your resumes...</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Unauthenticated -->
+      <div id="unauthenticatedContent" class="row justify-content-center" style="display: none;">
+        <div class="col-lg-6">
+          <div class="card border-0 shadow-lg" style="border-radius: 20px;">
+            <div class="card-body p-5 text-center">
+              <div class="alert-icon mb-4" style="width: 80px; height: 80px; background: linear-gradient(135deg, #dc3545, #c82333); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
+                <i class="fas fa-exclamation-triangle fa-2x text-white"></i>
+              </div>
+              <h4 class="text-danger mb-3">Authentication Required</h4>
+              <p class="text-muted mb-4">You must be logged in to view your account.</p>
+              <button id="loginFromAccountBtn" class="btn btn-danger btn-lg" style="border-radius: 50px;">
+                <i class="fas fa-sign-in-alt me-2"></i>Login to Continue
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="mt-5 py-5">
+    <div class="container">
+      <div class="row mt-5">
+        <div class="col-12">
+          <div class="footer-bottom text-center py-4" style="border-top: 2px solid transparent; background: linear-gradient(white, white) padding-box, linear-gradient(135deg, #667eea, #764ba2) border-box; border-radius: 20px;">
+            <div class="d-flex align-items-center justify-content-center flex-wrap">
+              <div class="icon-circle me-3 mb-2 mb-sm-0" style="width: 40px; height: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                <i class="fas fa-file-alt text-white"></i>
+              </div>
+              <span class="gradient-text fw-bold fs-5 me-3">Resume Analyzer</span>
+              <span class="text-muted">© <span id="currentYear">2024</span> All rights reserved</span>
+            </div>
+            <a href="terms.html">Terms and Conditions</a>
+            <div class="social-links mt-3">
+              <a href="#" class="btn btn-outline-primary btn-sm rounded-circle me-2" style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center;"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="btn btn-outline-primary btn-sm rounded-circle me-2" style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center;"><i class="fab fa-linkedin"></i></a>
+              <a href="#" class="btn btn-outline-primary btn-sm rounded-circle" style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center;"><i class="fab fa-github"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/auth-cognito-hosted.js"></script>
+  <script src="../js/main.js"></script>
+  <script src="../js/account.js"></script>
+</body>
+</html>

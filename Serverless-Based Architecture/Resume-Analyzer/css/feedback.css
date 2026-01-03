@@ -1,0 +1,74 @@
+.page-header {
+    animation: fadeInUp 0.8s ease-out;
+}
+
+.form-section {
+    padding: 1.5rem;
+    border-radius: 15px;
+    background: rgba(102, 126, 234, 0.05);
+    margin-bottom: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.form-section:hover {
+    background: rgba(102, 126, 234, 0.1);
+    transform: translateX(5px);
+}
+
+.rating-stars i {
+    transition: all 0.3s ease;
+}
+
+.rating-stars i:hover {
+    transform: scale(1.2);
+    text-shadow: 0 0 10px rgba(255, 193, 7, 0.5);
+}
+
+.rating-stars i.selected {
+    color: #ffc107 !important;
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background: linear-gradient(135deg, #6c757d, #495057) !important;
+}
+
+.form-control, .form-select {
+    transition: all 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    background: white;
+}
+
+.rating-section {
+    padding: 2rem;
+    border-radius: 20px;
+    background: linear-gradient(135deg, rgba(255, 193, 7, 0.1), rgba(224, 168, 0, 0.1));
+    border: 2px solid rgba(255, 193, 7, 0.2);
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+    .form-section {
+        padding: 1rem;
+    }
+
+    .ms-5 {
+        margin-left: 0 !important;
+        margin-top: 1rem;
+    }
+
+    .d-flex.align-items-center {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .icon-circle.me-3 {
+        margin-right: 0 !important;
+        margin-bottom: 1rem;
+    }
+}

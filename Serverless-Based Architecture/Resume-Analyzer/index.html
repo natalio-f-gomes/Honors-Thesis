@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Resume Analyzer</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <!-- Navbar brand -->
+            <a class="navbar-brand me-2 fw-bold gradient-text fs-3" href="index.html">
+                <i class="fas fa-file-alt me-2"></i>Resume Analyzer
+            </a>
+
+            <!-- Toggle button -->
+            <button class="navbar-toggler shadow-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarButtonsExample" aria-controls="navbarButtonsExample" aria-expanded="false" aria-label="Toggle navigation" style="color: #667eea;">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <!-- Collapsible wrapper -->
+            <div class="collapse navbar-collapse" id="navbarButtonsExample">
+                <!-- Left links -->
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
+
+                <div class="d-flex align-items-center">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link fw-semibold position-relative" href="index.html">
+                                <i class="fas fa-home me-2"></i>Home
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link fw-semibold position-relative" href="html/about.html">
+                                <i class="fas fa-info-circle me-2"></i>About
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link fw-semibold position-relative" href="html/contact.html">
+                                <i class="fas fa-envelope me-2"></i>Contact
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link fw-semibold position-relative" href="html/feedback.html">
+                                <i class="fas fa-comment-dots me-2"></i>Feedback
+                            </a>
+                        </li>
+                       
+                        <li class="nav-item" id="accountNavItem" style="display: none;">
+                            <a class="nav-link fw-semibold position-relative" href="html/account.html">
+                                <i class="fas fa-user-circle me-2"></i>My Account
+                            </a>
+                        </li>
+                         
+                    </ul>
+
+                    <button id="loginBtn" class="btn btn-success px-4 me-2 ms-3">
+                        <i class="fas fa-sign-in-alt me-2"></i>Login
+                    </button>
+                    <button id="logoutBtn" class="btn btn-danger px-4 me-2 ms-3" style="display: none;">
+                        <i class="fas fa-sign-out-alt me-2"></i>Logout
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="animate-fade-in">
+        <!-- Messages Section -->
+        <div class="container-lg text-center mt-4" id="messagesContainer"></div>
+
+        <!-- Hero Section -->
+        <section class="py-5 mb-5">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 text-lg-start mb-4 mb-lg-0">
+                        <div class="hero-content animate-fade-in">
+                            <!-- Hero Icon -->
+                            <div class="hero-icon mb-4">
+                                <div class="icon-circle mx-auto mx-lg-0" style="width: 80px; height: 80px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                                    <i class="fas fa-robot fa-2x text-white"></i>
+                                </div>
+                            </div>
+
+                            <!-- Hero Title -->
+                            <h1 class="display-4 fw-bold mb-4">
+                                <span class="gradient-text">Improve Your Resume</span>
+                                <br>
+                                <span style="color: #495057;">with Resume Analyzer</span>
+                            </h1>
+
+                            <!-- Hero Description -->
+                            <p class="lead mb-4 text-muted" style="font-size: 1.25rem; line-height: 1.6;">
+                                This tool is part of an ATP Summer Research initiative designed to help BSU students identify what to improve in their resumes. Upload your resume and get helpful feedback to enhance your job prospects.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Hero Illustration/Features -->
+                    <div class="col-lg-6">
+                        <div class="hero-features animate-fade-in">
+                            <div class="card border-0 shadow-lg" style="border-radius: 25px; overflow: hidden;">
+                                <div class="card-header text-white py-4" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%);">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-magic fa-2x me-3 opacity-75"></i>
+                                        <div>
+                                            <h5 class="mb-1 fw-bold">Resume Feedback</h5>
+                                            <p class="mb-0 opacity-75">Tailored suggestions for BSU students</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body p-4">
+                                    <div class="feature-list">
+                                        <div class="feature-item d-flex align-items-center mb-3">
+                                            <div class="icon-circle me-3" style="background: linear-gradient(135deg, #007bff, #0056b3); width: 50px; height: 50px;">
+                                                <i class="fas fa-chart-line text-white"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-1 fw-semibold">Skills Analysis</h6>
+                                                <p class="mb-0 text-muted small">Identify your strengths and what's missing</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="feature-item d-flex align-items-center mb-3">
+                                            <div class="icon-circle me-3" style="background: linear-gradient(135deg, #6f42c1, #8b5cf6); width: 50px; height: 50px;">
+                                                <i class="fas fa-briefcase text-white"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-1 fw-semibold">Job Matching</h6>
+                                                <p class="mb-0 text-muted small">Explore job titles that align with your experience</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="feature-item d-flex align-items-center">
+                                            <div class="icon-circle me-3" style="background: linear-gradient(135deg, #fd7e14, #ff6b35); width: 50px; height: 50px;">
+                                                <i class="fas fa-lightbulb text-white"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-1 fw-semibold">Suggestions</h6>
+                                                <p class="mb-0 text-muted small">See what you can improve in your resume</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="py-5 bg-light" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important; border-radius: 30px; margin: 0 1rem;">
+            <div class="container">
+                <div class="row text-center mb-5">
+                    <div class="col-12">
+                        <h2 class="display-5 fw-bold gradient-text mb-3">Why Choose Resume Analyzer?</h2>
+                        <p class="lead text-muted">An ATP Summer Research project helping Bridgewater State University students prepare for their careers</p>
+                    </div>
+                </div>
+
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="card h-100 border-0 shadow-lg text-center">
+                            <div class="card-body p-4">
+                                <div class="icon-circle mx-auto mb-4" style="width: 70px; height: 70px; background: linear-gradient(135deg, #e83e8c, #d63384);">
+                                    <i class="fas fa-rocket fa-2x text-white"></i>
+                                </div>
+                                <h5 class="fw-bold mb-3">Fast & Simple</h5>
+                                <p class="text-muted">Upload your resume and receive clear and helpful suggestions in seconds.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card h-100 border-0 shadow-lg text-center">
+                            <div class="card-body p-4">
+                                <div class="icon-circle mx-auto mb-4" style="width: 70px; height: 70px; background: linear-gradient(135deg, #20c997, #17a2b8);">
+                                    <i class="fas fa-shield-alt fa-2x text-white"></i>
+                                </div>
+                                <h5 class="fw-bold mb-3">Private & Secure</h5>
+                                <p class="text-muted">Your resume is never shared. All files are reviewed securely on our system.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card h-100 border-0 shadow-lg text-center">
+                            <div class="card-body p-4">
+                                <div class="icon-circle mx-auto mb-4" style="width: 70px; height: 70px; background: linear-gradient(135deg, #6c757d, #495057);">
+                                    <i class="fas fa-users fa-2x text-white"></i>
+                                </div>
+                                <h5 class="fw-bold mb-3">Built by BSU</h5>
+                                <p class="text-muted">Created by Bridgewater State University students and faculty to serve our own community.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-5 py-5">
+        <div class="container">
+            <div class="row mt-5">
+                <div class="col-12">
+                    <div class="footer-bottom text-center py-4" style="border-top: 2px solid transparent; background: linear-gradient(white, white) padding-box, linear-gradient(135deg, #667eea, #764ba2) border-box; border-radius: 20px;">
+                        <div class="d-flex align-items-center justify-content-center flex-wrap">
+                            <div class="icon-circle me-3 mb-2 mb-sm-0" style="width: 40px; height: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                                <i class="fas fa-file-alt text-white"></i>
+                            </div>
+                            <span class="gradient-text fw-bold fs-5 me-3">Resume Analyzer</span>
+                            <span class="text-muted">© <span id="currentYear">2024</span> All rights reserved</span>
+                        </div>
+                        <a href="terms.html">Terms and Conditions</a>
+                        <div class="social-links mt-3">
+                            <a href="#" class="btn btn-outline-primary btn-sm rounded-circle me-2" style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center;">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" class="btn btn-outline-primary btn-sm rounded-circle me-2" style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center;">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                            <a href="#" class="btn btn-outline-primary btn-sm rounded-circle" style="width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center;">
+                                <i class="fab fa-github"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Auth Script - MUST load before main.js -->
+    <script src="js/auth-cognito-hosted.js"></script>
+    
+    <!-- Main application script -->
+    <script src="js/main.js"></script>
+</body>
+</html>

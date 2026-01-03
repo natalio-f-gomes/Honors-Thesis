@@ -1,0 +1,45 @@
+name: Deploy to EC2
+
+on:
+  workflow_dispatch:
+    
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+    - name: Simple SSH Test
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USERNAME }}
+        key: ${{ secrets.EC2_SSH_KEY }}
+        script: |
+          echo "🚀 Starting deployment..."
+          echo "Current date: $(date)"
+          echo "Current user: $(whoami)"
+          echo "Current directory: $(pwd)"
+          
+          # Activate virtual environment (adjust path as needed)
+          source prodVirt/bin/activate
+          
+          # Navigate to your project directory (adjust path as needed)
+          cd /home/ec2-user/ATP-PROJECT
+          
+          # Pull latest code
+          git pull origin main
+          
+          # Install/update dependencies
+          pip install -r requirements.txt
+          
+          # Run Django commands
+          python3 manage.py makemigrations
+          python3 manage.py collectstatic --noinput
+          python3 manage.py migrate
+          
+          cd ..
+          ./reload_services.sh
+          
+          echo "Deployment completed successfully!"

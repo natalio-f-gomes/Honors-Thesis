@@ -1,0 +1,191 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Contact Message - {{ site_name }}</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #28a745;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #28a745;
+            margin-bottom: 10px;
+        }
+        .info-section {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .info-section h3 {
+            color: #495057;
+            margin-top: 0;
+            border-bottom: 2px solid #dee2e6;
+            padding-bottom: 10px;
+        }
+        .info-row {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        .info-label {
+            font-weight: bold;
+            min-width: 120px;
+            color: #6c757d;
+        }
+        .info-value {
+            flex: 1;
+        }
+        .message-box {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 4px solid #28a745;
+            margin: 15px 0;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #dee2e6;
+            color: #6c757d;
+            font-size: 12px;
+        }
+        .anonymous-badge {
+            display: inline-block;
+            background-color: #6c757d;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+        }
+        .priority-high {
+            background-color: #dc3545;
+        }
+        .priority-medium {
+            background-color: #ffc107;
+            color: #000;
+        }
+        .priority-low {
+            background-color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📧 New Contact Message</h1>
+            <p>{{ site_name }} - Admin Notification</p>
+        </div>
+
+        <div class="info-section">
+            <h3>👤 Sender Information</h3>
+            {% if user %}
+                <div class="info-row">
+                    <span class="info-label">Username:</span>
+                    <span class="info-value">{{ user.username }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Email:</span>
+                    <span class="info-value">{{ user.email }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Name:</span>
+                    <span class="info-value">{{ user.first_name }} {{ user.last_name }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">User ID:</span>
+                    <span class="info-value">{{ user.id }}</span>
+                </div>
+            {% else %}
+                <div class="info-row">
+                    <span class="info-label">User Type:</span>
+                    <span class="info-value"><span class="anonymous-badge">Anonymous User</span></span>
+                </div>
+                {% if contact.email %}
+                <div class="info-row">
+                    <span class="info-label">Email:</span>
+                    <span class="info-value">{{ contact.email }}</span>
+                </div>
+                {% endif %}
+                {% if contact.name %}
+                <div class="info-row">
+                    <span class="info-label">Name:</span>
+                    <span class="info-value">{{ contact.name }}</span>
+                </div>
+                {% endif %}
+            {% endif %}
+        </div>
+
+        <div class="info-section">
+            <h3>📝 Message Details</h3>
+            {% if contact.subject %}
+            <div class="info-row">
+                <span class="info-label">Subject:</span>
+                <span class="info-value">{{ contact.subject }}</span>
+            </div>
+            {% endif %}
+            {% if contact.category %}
+            <div class="info-row">
+                <span class="info-label">Category:</span>
+                <span class="info-value">{{ contact.category }}</span>
+            </div>
+            {% endif %}
+            {% if contact.priority %}
+            <div class="info-row">
+                <span class="info-label">Priority:</span>
+                <span class="info-value">
+                    <span class="anonymous-badge priority-{{ contact.priority|lower }}">
+                        {{ contact.priority|upper }}
+                    </span>
+                </span>
+            </div>
+            {% endif %}
+            <div class="info-row">
+                <span class="info-label">Submitted:</span>
+                <span class="info-value">{{ contact.created_at|date:"F d, Y H:i" }}</span>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h3>💬 Message Content</h3>
+            <div class="message-box">
+                {{ contact.message|linebreaks }}
+            </div>
+        </div>
+
+        {% if user %}
+        <div style="text-align: center; margin: 30px 0;">
+            <a href="https://resume-analyzer.net/admin/auth/user/{{ user.id }}/change/"
+               style="background-color: #28a745; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block;">
+                👤 View User Profile
+            </a>
+        </div>
+        {% endif %}
+
+        <div class="footer">
+            <p>This notification was sent automatically from {{ site_name }}.</p>
+            <p>Time: {{ timestamp|date:"F d, Y H:i:s" }}</p>
+        </div>
+    </div>
+</body>
+</html>
